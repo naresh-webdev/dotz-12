@@ -1,11 +1,44 @@
 // Importing required modules
 const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const TeamData = require('./models/TeamData.Schema');
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb+srv://dotzversion12:Xv6PU0MDhBqZdsKL@cluster0.idkzky1.mongodb.net/dotz12?retryWrites=true&w=majority&appName=Cluster0', {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+})
+	.then(() => console.log('Connected to MongoDB'))
+	.catch((err) => console.error('MongoDB connection error:', err));
+
+// Middleware to parse JSON bodies
+
+
+// Enable CORS for all origins
+app.use(cors());
+
+// OR enable CORS for specific origins
 
 // Setting up the root route
 app.get('/', (req, res) => {
 	res.send('Hello, World!');
+});
+
+app.post('/api/register', async (req, res) => {
+	try {
+		const teamData = req.body;
+		console.log("Received team data:", teamData);
+		const newTeam = new TeamData(teamData);
+		await newTeam.save();
+		res.status(201).json({ message: 'Team registered successfully', team: newTeam });
+	} catch (error) {
+		console.error('Error saving team data:', error);
+		res.status(500).json({ error: 'Failed to register team', details: error.message });
+	}
 });
 
 // Starting the server

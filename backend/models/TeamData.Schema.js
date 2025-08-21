@@ -63,17 +63,17 @@ const TeamDataSchema = new mongoose.Schema({
 
     payment: {
         type: {
-            method: { type: String, required: true },
-            status: { type: String, required: true },
-            order_id: { type: String, required: true },
-            receipt_id: { type: String, required: true }
+            method: { type: String, required: false },
+            status: { type: String, required: false },
+            order_id: { type: String, required: false },
+            receipt_id: { type: String, required: false }
         },
-        required: true
+        required: false
     }
 
 	// Add more fields as needed
 }, {
-	// Add schema options here
+    collection: 'TeamData'
 });
 
 module.exports = mongoose.model('TeamData', TeamDataSchema);
