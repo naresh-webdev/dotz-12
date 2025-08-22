@@ -1,4 +1,5 @@
 // Importing required modules
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const PORT = 5000;
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://dotzversion12:Xv6PU0MDhBqZdsKL@cluster0.idkzky1.mongodb.net/dotz12?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 })
