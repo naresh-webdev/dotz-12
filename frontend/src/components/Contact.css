@@ -1,0 +1,31 @@
+/* Contact Page (Professional Minimal) */
+.contact-page { background: #f7f9fc; }
+.contact-header { max-width: 900px; margin: 0 auto 32px; text-align: center; padding: 20px 16px 0; }
+.contact-header h1 { font-size: 2.25rem; font-weight: 700; color: #1f2937; margin-bottom: 8px; }
+.contact-header p { color: #6b7280; }
+.contact-layout { display: grid; grid-template-columns: 1fr 1.25fr; gap: 32px; max-width: 1200px; margin: 0 auto; padding: 0 16px 40px; }
+.contact-panel { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; }
+.panel-section h2 { font-size: 1.25rem; font-weight: 600; color: #111827; margin-bottom: 16px; }
+.info-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.info-list li { display: grid; grid-template-columns: 140px 1fr; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #f3f4f6; }
+.info-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.info-label { color: #6b7280; font-weight: 500; }
+.info-value { display: flex; flex-direction: column; gap: 6px; }
+.info-value a, .info-value span { color: #1f2937; text-decoration: none; }
+.info-value a:hover { color: #2563eb; }
+.contact-form-wrapper { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; }
+.contact-form.minimal .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.contact-form.minimal .form-group { display: flex; flex-direction: column; gap: 8px; }
+.contact-form.minimal label { color: #374151; font-weight: 600; }
+.contact-form.minimal input, .contact-form.minimal textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 14px; background: #ffffff; color: #111827; transition: border-color .2s ease, box-shadow .2s ease; }
+.contact-form.minimal input:focus, .contact-form.minimal textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+.contact-form.minimal .form-actions { margin-top: 8px; }
+.map-block { max-width: 1200px; margin: 0 auto 24px; padding: 0 16px 60px; }
+.map-block h2 { font-size: 1.25rem; font-weight: 600; color: #111827; margin: 8px 0 12px; }
+.map-frame { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; }
+
+@media (max-width: 992px) { .contact-layout { grid-template-columns: 1fr; } }
+@media (max-width: 480px) {
+  .info-list li { grid-template-columns: 1fr; }
+  .contact-form.minimal .form-row { grid-template-columns: 1fr; }
+}
