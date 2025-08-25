@@ -109,7 +109,7 @@ export default function FormRegister({ onSubmit }) {
 
 // ---------- API Helpers ----------
   const submitTeamData = async (teamData) => {
-    const response = await fetch("http://localhost:5000/api/register", {
+    const response = await fetch("https://dotz-12-backend.onrender.com/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(teamData),
@@ -119,7 +119,7 @@ export default function FormRegister({ onSubmit }) {
   };
 
   const createOrder = async (amountPaise) => {
-    const response = await fetch("http://localhost:5000/api/create-order", {
+    const response = await fetch("https://dotz-12-backend.onrender.com/api/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: amountPaise, currency: "INR" }),
@@ -129,7 +129,7 @@ export default function FormRegister({ onSubmit }) {
   };
 
   const verifyPayment = async (paymentData) => {
-    const response = await fetch("http://localhost:5000/api/verify-payment", {
+    const response = await fetch("https://dotz-12-backend.onrender.com/api/verify-payment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(paymentData),
