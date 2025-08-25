@@ -109,7 +109,7 @@ export default function FormRegister({ onSubmit }) {
 
 // ---------- API Helpers ----------
   const submitTeamData = async (teamData) => {
-    const response = await fetch("https://dotz-12-backend.onrender.comapi/register", {
+    const response = await fetch("https://dotz-12-backend.onrender.com/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(teamData),
