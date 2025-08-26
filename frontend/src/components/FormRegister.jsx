@@ -109,7 +109,7 @@ export default function FormRegister({ onSubmit }) {
 
 // ---------- API Helpers ----------
   const submitTeamData = async (teamData) => {
-    const response = await fetch("https://dotz-12-backend.onrender.com/api/register", {
+    const response = await fetch("http://localhost:5000/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(teamData),
@@ -118,67 +118,63 @@ export default function FormRegister({ onSubmit }) {
     return response.json();
   };
 
-  const createOrder = async (amountPaise) => {
-    const response = await fetch("https://dotz-12-backend.onrender.com/api/create-order", {
+  // ---------- Cashfree Integration ----------
+  // Create Cashfree order (token) from backend
+  const createCashfreeOrder = async (amountPaise) => {
+    const response = await fetch("http://localhost:5000/api/create-cashfree-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: amountPaise, currency: "INR" }),
     });
-    if (!response.ok) throw new Error("Failed to create order");
+    if (!response.ok) throw new Error("Failed to create Cashfree order");
     return response.json();
   };
 
-  const verifyPayment = async (paymentData) => {
-    const response = await fetch("https://dotz-12-backend.onrender.com/api/verify-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(paymentData),
-    });
-    return response.json();
+  // Handler for Cashfree payment
+  const openCashfree = (orderToken, amountRupees) => {
+    if (!window.Cashfree) {
+      const script = document.createElement("script");
+      script.src = "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js";
+      script.async = true;
+      script.onload = () => launchCashfree(orderToken);
+      document.body.appendChild(script);
+    } else {
+      launchCashfree(orderToken);
+    }
   };
 
-  // ---------- Razorpay Checkout ----------
-  const openRazorpay = (order, amountRupees) => {
-    const options = {
-      key: process.env.REACT_APP_RAZORPAY_KEY_ID, // frontend key_id
-      amount: order.amount,
-      currency: order.currency,
-      name: "Tech Event Registration",
-      description: "Team Registration Fee",
-      order_id: order.id,
-      prefill: {
-        name: form.LeaderName,
-        email: form.LeaderEmail,
-        contact: form.LeaderPhoneNumber,
-      },
-      handler: async function (response) {
-        // Verify payment on backend
-        const verifyRes = await verifyPayment(response);
-        if (verifyRes.verified) {
-          alert("✅ Payment successful and verified!");
-          // Register team only after successful payment
-          try {
-            const result = await submitTeamData(form);
-            console.log("✅ Team registered:", result);
-            onSubmit?.({ ...form, payment: response });
-          } catch (err) {
-            alert("❌ Team registration failed after payment!");
-            console.error("❌ Team registration failed:", err);
-          }
-        } else {
-          alert("❌ Payment verification failed!");
+  // Launch Cashfree checkout
+  const launchCashfree = (orderToken) => {
+    const cashfree = new window.Cashfree();
+    cashfree.checkout({
+      paymentSessionId: orderToken,
+      redirectTarget: "_modal",
+      onSuccess: async (data) => {
+        // Payment successful, register team
+        try {
+          const result = await submitTeamData(form);
+          alert("✅ Payment successful and team registered!");
+          onSubmit?.({ ...form, payment: data });
+        } catch (err) {
+          alert("❌ Team registration failed after payment!");
+          console.error("❌ Team registration failed:", err);
         }
       },
-      theme: { color: "#3399cc" },
-    };
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      onFailure: (data) => {
+        alert("❌ Payment failed!");
+        console.error("❌ Payment failed:", data);
+      },
+      onError: (err) => {
+        alert("❌ Payment error!");
+        console.error("❌ Payment error:", err);
+      },
+    });
   };
 
   // ---------- Submit Handler ----------
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // computer the participantCount
+    // compute the participantCount
     const participantCount = form.members.length + 1; // +1 for the leader
     setForm((prev) => ({ ...prev, participantCount }));
     if (form.leaderEvents.length < 2) {
@@ -196,19 +192,11 @@ export default function FormRegister({ onSubmit }) {
       const amountRupees = teamSize * 200;
       const amountPaise = amountRupees * 100;
 
-      // Step 3: Create order in backend
-      const { order } = await createOrder(amountPaise);
+      // Step 3: Create Cashfree order in backend
+      const { orderToken } = await createCashfreeOrder(amountPaise);
 
-      // Step 4: Load Razorpay SDK if not loaded
-      if (!window.Razorpay) {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.async = true;
-        script.onload = () => openRazorpay(order, amountRupees);
-        document.body.appendChild(script);
-      } else {
-        openRazorpay(order, amountRupees);
-      }
+      // Step 4: Load Cashfree SDK if not loaded
+      openCashfree(orderToken, amountRupees);
     } catch (error) {
       console.error("❌ Registration or payment failed:", error);
     }
