@@ -21,7 +21,7 @@ const PaymentSuccess = () => {
   const verifyPayment = async () => {
     try {
       // Single API call: verify payment and get booking data
-      const response = await fetch('http://localhost:5000/api/payment/verify', {
+      const response = await fetch('https://dotz-12-backend.onrender.com/api/payment/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId })
