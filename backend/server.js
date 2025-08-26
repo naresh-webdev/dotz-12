@@ -195,7 +195,7 @@ app.post("/api/register", async (req, res) => {
 
 
 // POST /api/payment/verify - Verify payment status and return booking data
-app.post('/payment/verify', async (req, res) => {
+app.post('/api/payment/verify', async (req, res) => {
   try {
     const { orderId } = req.body;
 
@@ -387,7 +387,7 @@ app.post('/api/payment/webhook', async (req, res) => {
 });
 
 // GET /api/status/:orderId - Get booking status
-app.get('/status/:orderId', async (req, res) => {
+app.get('/api/status/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
 
