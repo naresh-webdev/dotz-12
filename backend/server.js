@@ -126,7 +126,7 @@ app.post("/api/register", async (req, res) => {
     
     // Create Cashfree order using SDK
     const orderData = {
-      order_amount: teamData.participantCount * 200,
+      order_amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
       order_currency: "INR",
       order_id: orderId,
       customer_details: {
@@ -264,7 +264,7 @@ app.post('/payment/verify', async (req, res) => {
           leaderEmail: teamData.leaderEmail,
           mobileNumber: teamData.leaderPhoneNumber,
           orderId: teamData.orderId,
-          amount: teamData.amount,
+          amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
           paymentId: teamData.paymentId,
           paymentMethod: teamData.paymentMethod,
           paymentTime: teamData.paymentTime,
@@ -406,7 +406,7 @@ app.get('/status/:orderId', async (req, res) => {
         mobileNumber: teamData.leaderPhoneNumber,
         status: teamData.paymentStatus,
         orderId: teamData.orderId,
-        amount: teamData.participantCount * 200,
+        amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
         paymentId: teamData.paymentId,
         paymentMethod: teamData.paymentMethod,
         paymentTime: teamData.paymentTime,
