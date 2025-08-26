@@ -302,7 +302,7 @@ app.post('/payment/verify', async (req, res) => {
 });
 
 // POST /api/payment/webhook - Handle Cashfree webhooks
-app.post('/payment/webhook', async (req, res) => {
+app.post('/api/payment/webhook', async (req, res) => {
   try {
     console.log('Webhook received:', JSON.stringify(req.body, null, 2));
 
