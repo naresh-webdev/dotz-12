@@ -82,14 +82,15 @@ const TeamDataSchema = new mongoose.Schema({
             message: 'Leader must select at least 2 events and at most 5.'
         }
     },
-    payment: {
-        type: {
-            method: { type: String, required: false },
-            orderId: { type: String, required: false },
-            receiptId: { type: String, required: false }
-        },
-        required: false
-    },
+    // payment information
+    orderId: {type: String, required: false},
+    paymentStatus: {type: String, required: false},
+    paymentMethod: {type: String, required: false},
+    paymentId: {type: String, required: false},
+    paymentTime: {type: Date, required: false},
+    bankReference: {type: String, required: false},
+
+    
     paperPresentationTeamCount: {
         type: Number,
         required: false

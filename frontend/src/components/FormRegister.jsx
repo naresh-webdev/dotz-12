@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import './FormRegister.css';
+import { load } from "@cashfreepayments/cashfree-js";
+import { useNavigate } from "react-router-dom";
 
 const initialMember = {
   name: "",
   email: "",
   phone: "",
   registerNumber: "",
-  foodPreference: "",
-  gender: "",
+  foodPreference: "Vegetarian",
+  gender: "Male",
   events: [], // Each member's events
 };
 
@@ -35,13 +37,15 @@ export default function FormRegister({ onSubmit }) {
     leaderPhoneNumber: "",
     leaderEmail: "",
     leaderRegisterNumber: "",
-    leaderFoodPreference: "",
-    leaderGender: "",
+    leaderFoodPreference: "Vegetarian",
+    leaderGender: "Male",
     collegeName: "",
     collegeId: "",
     members: [ { ...initialMember } ],
     leaderEvents: [],
   });
+
+  const navigate = useNavigate();
 
   // Handler for simple fields
   const handleChange = (e) => {
@@ -118,88 +122,64 @@ export default function FormRegister({ onSubmit }) {
     return response.json();
   };
 
-  // ---------- Cashfree Integration ----------
-  // Create Cashfree order (token) from backend
-  const createCashfreeOrder = async (amountPaise) => {
-    const response = await fetch("http://localhost:5000/api/create-cashfree-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: amountPaise, currency: "INR" }),
-    });
-    if (!response.ok) throw new Error("Failed to create Cashfree order");
-    return response.json();
-  };
 
-  // Handler for Cashfree payment
-  const openCashfree = (orderToken, amountRupees) => {
-    if (!window.Cashfree) {
-      const script = document.createElement("script");
-      script.src = "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js";
-      script.async = true;
-      script.onload = () => launchCashfree(orderToken);
-      document.body.appendChild(script);
-    } else {
-      launchCashfree(orderToken);
-    }
-  };
-
-  // Launch Cashfree checkout
-  const launchCashfree = (orderToken) => {
-    const cashfree = new window.Cashfree();
-    cashfree.checkout({
-      paymentSessionId: orderToken,
-      redirectTarget: "_modal",
-      onSuccess: async (data) => {
-        // Payment successful, register team
-        try {
-          const result = await submitTeamData(form);
-          alert("✅ Payment successful and team registered!");
-          onSubmit?.({ ...form, payment: data });
-        } catch (err) {
-          alert("❌ Team registration failed after payment!");
-          console.error("❌ Team registration failed:", err);
-        }
-      },
-      onFailure: (data) => {
-        alert("❌ Payment failed!");
-        console.error("❌ Payment failed:", data);
-      },
-      onError: (err) => {
-        alert("❌ Payment error!");
-        console.error("❌ Payment error:", err);
-      },
-    });
-  };
 
   // ---------- Submit Handler ----------
   const handleSubmit = async (e) => {
     e.preventDefault();
     // compute the participantCount
     const participantCount = form.members.length + 1; // +1 for the leader
-    setForm((prev) => ({ ...prev, participantCount }));
+    console.log("participant Count : ", participantCount);
+
+    // Validate leader events
     if (form.leaderEvents.length < 2) {
       alert("❌ Please select at least 2 events for the leader.");
       return;
     }
-    form.members.forEach(mem => {
+
+    // Validate member events
+    for (const mem of form.members) {
       if (mem.events.length < 1) {
-        alert(`❌ Please select at least 1 event for member ${mem.name}.`);
+        alert(`❌ Please select at least 1 event for member ${mem.name || ''}.`);
+        return;
       }
-    });
-    try {
-      // Step 2: Calculate fee = 200 * team size
-      const teamSize = Number(form.participantCount || 0);
-      const amountRupees = teamSize * 200;
-      const amountPaise = amountRupees * 100;
-
-      // Step 3: Create Cashfree order in backend
-      const { orderToken } = await createCashfreeOrder(amountPaise);
-
-      // Step 4: Load Cashfree SDK if not loaded
-      openCashfree(orderToken, amountRupees);
-    } catch (error) {
-      console.error("❌ Registration or payment failed:", error);
     }
+
+    // Prepare form data with correct participantCount
+    const formData = { ...form, participantCount };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const result = await response.json();
+      console.log("RESULT FROM REGISTERING USER : ", result);
+      console.log("User Data Successfully Saved to MongoDB");
+
+      if (response.ok) {
+        // Registration successful, navigate to payment
+        navigate('/payment', {
+          state: {
+            orderId: result.orderId,
+            paymentSessionId: result.paymentSessionId,
+            teamData: result.team
+          }
+        });
+        alert("✅ Payment successful and team registered!");
+      } else {
+        alert("❌ Failed to get payment token from server.");
+      }
+    } catch (err) {
+      alert("❌ Team registration failed after payment!");
+      console.error("❌ Team registration failed:", err);
+    }
+
+    
+
+
+    
   };
 
   return (
@@ -225,14 +205,14 @@ export default function FormRegister({ onSubmit }) {
           <input name="collegeId" value={form.collegeId} onChange={handleChange} placeholder="College ID" required className="form-input" />
         </label>
         <label className="form-label">Food Preference
-          <select name="leaderFoodPreference" value={form.leaderFoodPreference} onChange={handleChange} required className="form-select">
+          <select name="leaderFoodPreference" value={form.leaderFoodPreference} defaultValue={form.leaderFoodPreference} onChange={handleChange} required className="form-select">
             <option value="">Select...</option>
             <option value="Vegetarian">Vegetarian</option>
             <option value="Non-Vegetarian">Non-Vegetarian</option>
           </select>
         </label>
         <label className="form-label">Gender
-          <select name="leaderGender" value={form.leaderGender} onChange={handleChange} required className="form-select">
+          <select name="leaderGender" value={form.leaderGender} defaultValue={form.leaderGender} onChange={handleChange} required className="form-select">
             <option value="">Select...</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -278,14 +258,14 @@ export default function FormRegister({ onSubmit }) {
                 <input name="registerNumber" value={member.registerNumber} onChange={(e) => handleMemberChange(idx, e)} placeholder="Register Number" required type="number" className="form-input" />
               </label>
               <label className="form-label">Food Preference
-                <select name="foodPreference" value={member.foodPreference} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
+                <select name="foodPreference" value={member.foodPreference} defaultValue={member.foodPreference} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
                   <option value="">Select...</option>
                   <option value="Vegetarian">Vegetarian</option>
                   <option value="Non-Vegetarian">Non-Vegetarian</option>
                 </select>
               </label>
               <label className="form-label">Gender
-                <select name="gender" value={member.gender} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
+                <select name="gender" value={member.gender} defaultValue={member.gender} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
                   <option value="">Select...</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
