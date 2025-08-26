@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
 import './Home.css';
 
 const faqs = [
@@ -40,7 +41,7 @@ const phases = [
     id: 1,
     title: "Registrations",
     subtitle: "Phase 1",
-    date: "30 Aug 2024",
+    date: "30 Aug 2025",
     icon: "📝",
     description: "Open for all students across India",
     status: "active"
@@ -49,25 +50,25 @@ const phases = [
     id: 2,
     title: "Shortlisting",
     subtitle: "Phase 2",
-    date: "5 Sep 2024",
+    date: "12 Sep 2025",
     icon: "✅",
     description: "Selection of qualified participants",
     status: "upcoming"
   },
   {
     id: 3,
-    title: "Judging",
+    title: "Event Day",
     subtitle: "Phase 3",
-    date: "12 Sep 2024",
+    date: "15 Sep 2025",
     icon: "🏆",
-    description: "Event execution and evaluation",
+    description: "National Level Technical Symposium",
     status: "upcoming"
   },
   {
     id: 4,
     title: "Prize",
     subtitle: "Phase 4",
-    date: "12 Sep 2024",
+    date: "15 Sep 2025",
     icon: "🎉",
     description: "Winners announcement and awards",
     status: "upcoming"
@@ -78,13 +79,62 @@ const Home = () => {
   const [openIdx, setOpenIdx] = useState(null);
   const [activePhase, setActivePhase] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const [daysLeft, setDaysLeft] = useState(null);
+  const [progressRemaining, setProgressRemaining] = useState(100);
+  
+  const heroRef = useRef(null);
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Phase animation interval
     const interval = setInterval(() => {
       setActivePhase(prev => prev === 4 ? 1 : prev + 1);
     }, 3000);
-    return () => clearInterval(interval);
+
+    // Calculate dynamic days left and registration progress
+    const calculateTime = () => {
+      const now = new Date();
+      const eventDate = new Date('2025-09-15T00:00:00');
+      const msPerDay = 24 * 60 * 60 * 1000;
+
+      const diffMs = eventDate - now;
+      const remainingDays = Math.max(0, Math.ceil(diffMs / msPerDay));
+      setDaysLeft(remainingDays);
+
+      // Progress remaining based on a 30-day window leading up to the event
+      const windowDays = 30;
+      const windowStart = new Date(eventDate.getTime() - windowDays * msPerDay);
+      let percent = 100;
+      if (now >= windowStart && now <= eventDate) {
+        percent = Math.max(0, Math.min(100, Math.round(((eventDate - now) / (windowDays * msPerDay)) * 100)));
+      } else if (now > eventDate) {
+        percent = 0;
+      } else {
+        percent = 100;
+      }
+      setProgressRemaining(percent);
+    };
+
+    calculateTime();
+    const t = setInterval(calculateTime, 60 * 1000);
+    
+    // Simple mouse movement for parallax
+    const onMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth) * 2 - 1; // -1..1
+      const y = (e.clientY / innerHeight) * 2 - 1; // -1..1
+      const root = document.documentElement;
+      root.style.setProperty('--mx', x.toFixed(3));
+      root.style.setProperty('--my', y.toFixed(3));
+    };
+    window.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(t);
+      window.removeEventListener('mousemove', onMouseMove);
+    };
   }, []);
 
   const toggleFaq = (idx) => {
@@ -98,46 +148,173 @@ const Home = () => {
   return (
     <div className="home-modern">
       {/* Hero Section */}
-      <section className="hero-section">
+      <motion.section 
+        className="hero-section"
+        ref={heroRef}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { 
+            opacity: 1,
+            transition: {
+              duration: 1,
+              staggerChildren: 0.3
+            }
+          }
+        }}
+      >
         <div className="hero-background">
+          <div className="hero-stars"></div>
           <div className="hero-particles"></div>
           <div className="hero-grid"></div>
+          <div className="hero-aurora"></div>
+          <div className="hero-shooting-stars">
+            <div className="shooting-star"></div>
+            <div className="shooting-star"></div>
+            <div className="shooting-star"></div>
+          </div>
+          <div className="hero-orbs">
+            <span className="orb o1"></span>
+            <span className="orb o2"></span>
+            <span className="orb o3"></span>
+          </div>
+          <div className="hero-energy-waves">
+            <div className="energy-wave wave-1"></div>
+            <div className="energy-wave wave-2"></div>
+            <div className="energy-wave wave-3"></div>
+          </div>
         </div>
-        <div className="container hero-content">
-          <div className="hero-badges">
+        
+        <motion.div 
+          className="container hero-content"
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { 
+              opacity: 1, 
+              y: 0,
+              transition: {
+                duration: 0.8,
+                staggerChildren: 0.2
+              }
+            }
+          }}
+        >
+          <motion.div 
+            className="hero-badges"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
             <span className="badge-primary">UCET | Association of IT</span>
             <span className="badge-secondary">Presents</span>
-          </div>
-          <h1 className="hero-title">
-            <span className="title-main">DoTz</span>
-            <span className="title-version">V12.0</span>
-          </h1>
-          <p className="hero-subtitle">National Level Technical Symposium</p>
-          <div className="hero-actions">
-            <a 
+          </motion.div>
+          
+          <motion.h1 
+            className="hero-title"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
+            <motion.span 
+              className="title-main"
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            >
+              DoTz
+            </motion.span>
+            <motion.span 
+              className="title-version"
+              animate={{
+                opacity: [0.8, 1, 0.8]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              V12.0
+            </motion.span>
+          </motion.h1>
+          
+          <motion.p 
+            className="hero-subtitle"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 }
+            }}
+            animate={{
+              y: [0, -2, 0],
+              opacity: [0.9, 1, 0.9]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            National Level Technical Symposium · 15 Sep 2025
+          </motion.p>
+          
+          <motion.div 
+            className="hero-actions"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
+            <motion.a 
               href="#register" 
               className="btn-primary"
               aria-label="Jump to registration section"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1 }
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span>Register Here</span>
-              <div className="btn-glow"></div>
-            </a>
-            <Link to="/events" className="btn-secondary">
-              <span>Explore Events</span>
-            </Link>
-          </div>
-        </div>
+            </motion.a>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1 }
+              }}
+            >
+              <Link to="/events" className="btn-secondary">
+                <span>Explore Events</span>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+        
         <div className="hero-scroll">
           <div className="scroll-indicator"></div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Stats Section */}
       <section className="stats-section">
         <div className="container stats-grid">
           <div className="stat-card">
             <div className="stat-icon">🎯</div>
-            <div className="stat-number">20+</div>
+            <div className="stat-number">5+</div>
             <div className="stat-label">Events</div>
             <div className="stat-desc">Technical & Non-Technical</div>
           </div>
@@ -149,9 +326,9 @@ const Home = () => {
           </div>
           <div className="stat-card">
             <div className="stat-icon">🏛️</div>
-            <div className="stat-number">10+</div>
-            <div className="stat-label">Years</div>
-            <div className="stat-desc">Of Excellence</div>
+            <div className="stat-number">12th</div>
+            <div className="stat-label">Year</div>
+            <div className="stat-desc">11 Years of Excellence</div>
           </div>
         </div>
       </section>
@@ -175,7 +352,7 @@ const Home = () => {
               <div className="card-title">Date & Time</div>
             </div>
             <div className="card-content">
-              <p>12 September, 2024</p>
+              <p>15 September, 2025</p>
               <p className="card-sub">9:00 AM to 4:00 PM</p>
             </div>
           </div>
@@ -211,15 +388,15 @@ const Home = () => {
           <div className="about-visual">
             <div className="visual-card">
               <div className="visual-item">
-                <div className="visual-number">10+</div>
-                <div className="visual-label">Years of Legacy</div>
+                <div className="visual-number">12th</div>
+                <div className="visual-label">Year of Legacy</div>
               </div>
               <div className="visual-item">
-                <div className="visual-number">20+</div>
-                <div className="visual-label">Engaging Events</div>
+                <div className="visual-number">5+</div>
+                <div className="visual-label">Tech & Non-Tech Events</div>
               </div>
               <div className="visual-item">
-                <div className="visual-number">1000+</div>
+                <div className="visual-number">100+</div>
                 <div className="visual-label">Participants</div>
               </div>
             </div>
@@ -269,7 +446,7 @@ const Home = () => {
               <h2 className="section-title">Registration</h2>
               <div className="reg-deadline">
                 <span className="deadline-label">Deadline</span>
-                <span className="deadline-date">11 Sep 2024</span>
+                <span className="deadline-date">10 Sep 2025</span>
               </div>
             </div>
             <div className="reg-info">
@@ -306,14 +483,14 @@ const Home = () => {
               </div>
               <div className="reg-card-content">
                 <div className="reg-stat">
-                  <div className="stat-value">30+</div>
+                  <div className="stat-value">{daysLeft !== null ? `${daysLeft}` : '—'}</div>
                   <div className="stat-label">Days Left</div>
                 </div>
                 <div className="reg-progress">
                   <div className="progress-bar">
-                    <div className="progress-fill" style={{width: '75%'}}></div>
+                    <div className="progress-fill" style={{width: `${progressRemaining}%`}}></div>
                   </div>
-                  <span className="progress-text">75% of registration period remaining</span>
+                  <span className="progress-text">{progressRemaining}% of registration period remaining</span>
                 </div>
               </div>
             </div>
@@ -392,7 +569,7 @@ const Home = () => {
               <div className="strip-icon">✉️</div>
               <div className="strip-info">
                 <div className="strip-label">Email</div>
-                <div className="strip-text">dotzversion11@gmail.com</div>
+                <div className="strip-text">dotzversion12@gmail.com</div>
               </div>
             </div>
           </div>

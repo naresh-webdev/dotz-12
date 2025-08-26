@@ -216,28 +216,44 @@ export default function FormRegister({ onSubmit }) {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-  <h2 className="form-title text-gray-800">Team Registration</h2>
+      <h2 className="form-title">Team Registration</h2>
       <div className="form-grid">
-        <input name="leaderName" value={form.leaderName} onChange={handleChange} placeholder="Leader Name" required className="form-input" />
-        <input name="leaderPhoneNumber" value={form.leaderPhoneNumber} onChange={handleChange} placeholder="Leader Phone Number" required type="number" className="form-input" />
-        <input name="leaderEmail" value={form.leaderEmail} onChange={handleChange} placeholder="Leader Email" required type="email" className="form-input" />
-        <input name="leaderRegisterNumber" value={form.leaderRegisterNumber} onChange={handleChange} placeholder="Leader Register Number" required type="number" className="form-input" />
-        <input name="collegeName" value={form.collegeName} onChange={handleChange} placeholder="College Name" required className="form-input" />
-        <input name="collegeId" value={form.collegeId} onChange={handleChange} placeholder="College ID" required className="form-input" />
-        <select name="leaderFoodPreference" value={form.leaderFoodPreference} onChange={handleChange} required className="form-select">
-          <option value="">Food Preference</option>
-          <option value="Vegetarian">Vegetarian</option>
-          <option value="Non-Vegetarian">Non-Vegetarian</option>
-        </select>
-        <select name="leaderGender" value={form.leaderGender} onChange={handleChange} required className="form-select">
-          <option value="">Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
+        <label className="form-label">Leader Name
+          <input name="leaderName" value={form.leaderName} onChange={handleChange} placeholder="Leader Name" required className="form-input" />
+        </label>
+        <label className="form-label">Leader Phone Number
+          <input name="leaderPhoneNumber" value={form.leaderPhoneNumber} onChange={handleChange} placeholder="Leader Phone Number" required type="number" className="form-input" />
+        </label>
+        <label className="form-label">Leader Email
+          <input name="leaderEmail" value={form.leaderEmail} onChange={handleChange} placeholder="Leader Email" required type="email" className="form-input" />
+        </label>
+        <label className="form-label">Leader Register Number
+          <input name="leaderRegisterNumber" value={form.leaderRegisterNumber} onChange={handleChange} placeholder="Leader Register Number" required type="number" className="form-input" />
+        </label>
+        <label className="form-label">College Name
+          <input name="collegeName" value={form.collegeName} onChange={handleChange} placeholder="College Name" required className="form-input" />
+        </label>
+        <label className="form-label">College ID
+          <input name="collegeId" value={form.collegeId} onChange={handleChange} placeholder="College ID" required className="form-input" />
+        </label>
+        <label className="form-label">Food Preference
+          <select name="leaderFoodPreference" value={form.leaderFoodPreference} onChange={handleChange} required className="form-select">
+            <option value="">Select...</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Non-Vegetarian">Non-Vegetarian</option>
+          </select>
+        </label>
+        <label className="form-label">Gender
+          <select name="leaderGender" value={form.leaderGender} onChange={handleChange} required className="form-select">
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
       </div>
 
       <div>
-  <h3 className="text-xl font-semibold mb-2 text-gray-800">Leader Events (select min 2)</h3>
+      <h3 className="text-xl font-semibold mb-2">Leader Events (select min 2)</h3>
         <div className="form-grid">
           {EVENT_OPTIONS.map((eventName) => (
             <label key={eventName} className="flex items-center space-x-2 bg-gray-50 p-2 rounded cursor-pointer">
@@ -261,25 +277,37 @@ export default function FormRegister({ onSubmit }) {
         <div className="space-y-4">
           {form.members.map((member, idx) => (
             <div key={idx} className="form-grid bg-gray-50 p-4 rounded-lg">
-              <input name="name" value={member.name} onChange={(e) => handleMemberChange(idx, e)} placeholder="Name" required className="form-input" />
-              <input name="email" value={member.email} onChange={(e) => handleMemberChange(idx, e)} placeholder="Email" required type="email" className="form-input" />
-              <input name="phone" value={member.phone} onChange={(e) => handleMemberChange(idx, e)} placeholder="Phone" required type="number" className="form-input" />
-              <input name="registerNumber" value={member.registerNumber} onChange={(e) => handleMemberChange(idx, e)} placeholder="Register Number" required type="number" className="form-input" />
-              <select name="foodPreference" value={member.foodPreference} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
-                <option value="">Food Preference</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Non-Vegetarian">Non-Vegetarian</option>
-              </select>
-              <select name="gender" value={member.gender} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
-                <option value="">Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+              <label className="form-label">Name
+                <input name="name" value={member.name} onChange={(e) => handleMemberChange(idx, e)} placeholder="Name" required className="form-input" />
+              </label>
+              <label className="form-label">Email
+                <input name="email" value={member.email} onChange={(e) => handleMemberChange(idx, e)} placeholder="Email" required type="email" className="form-input" />
+              </label>
+              <label className="form-label">Phone
+                <input name="phone" value={member.phone} onChange={(e) => handleMemberChange(idx, e)} placeholder="Phone" required type="number" className="form-input" />
+              </label>
+              <label className="form-label">Register Number
+                <input name="registerNumber" value={member.registerNumber} onChange={(e) => handleMemberChange(idx, e)} placeholder="Register Number" required type="number" className="form-input" />
+              </label>
+              <label className="form-label">Food Preference
+                <select name="foodPreference" value={member.foodPreference} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
+                  <option value="">Select...</option>
+                  <option value="Vegetarian">Vegetarian</option>
+                  <option value="Non-Vegetarian">Non-Vegetarian</option>
+                </select>
+              </label>
+              <label className="form-label">Gender
+                <select name="gender" value={member.gender} onChange={(e) => handleMemberChange(idx, e)} required className="form-select">
+                  <option value="">Select...</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </label>
               <div className="w-full">
-                <span className="font-medium text-gray-800">Events: (select min 1)</span>
+                <span className="font-medium">Events: (select min 1)</span>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {MEMBER_EVENT_OPTIONS.map((eventName) => (
-                    <label key={eventName} className="flex items-center space-x-1 text-gray-800">
+                    <label key={eventName} className="flex items-center space-x-1">
                       <input
                         type="checkbox"
                         checked={member.events.includes(eventName)}
