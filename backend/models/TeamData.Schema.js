@@ -83,12 +83,12 @@ const TeamDataSchema = new mongoose.Schema({
         }
     },
     // payment information
-    orderId: {type: String, required: true, default: ''},
-    paymentStatus: {type: String, required: true, default: 'UNPAID'},
-    paymentMethod: {type: String, required: true, default: ''},
-    paymentId: {type: String, required: true, default: ''},
+    orderId: {type: String, required: false, default: ''},
+    paymentStatus: {type: String, required: false, default: 'UNPAID'},
+    paymentMethod: {type: String, required: false, default: ''},
+    paymentId: {type: String, required: false, default: ''},
     paymentTime: {type: Date, required: false, default: null},
-    bankReference: {type: String, required: true, default: ''},
+    bankReference: {type: String, required: false, default: ''},
 
     
     paperPresentationTeamCount: {
