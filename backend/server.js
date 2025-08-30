@@ -192,8 +192,13 @@ app.post("/api/register", async (req, res) => {
 
     
     // Create Cashfree order using SDK
+    // Calculate total amount and add 2% service charge
+    const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
+    const serviceCharge = baseAmount * 0.02;
+    const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
+    
     const orderData = {
-      order_amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
+      order_amount: totalAmount,
       order_currency: "INR",
       order_id: orderId,
       customer_details: {
@@ -319,6 +324,10 @@ app.post('/api/payment/verify', async (req, res) => {
       await teamData.save();
       console.log(`Team ${orderId} updated successfully`);
 
+      
+      const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
+      const serviceCharge = baseAmount * 0.02;
+      const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
       // Return both verification result and booking data
       res.json({
         success: true,
@@ -331,7 +340,7 @@ app.post('/api/payment/verify', async (req, res) => {
           leaderEmail: teamData.leaderEmail,
           mobileNumber: teamData.leaderPhoneNumber,
           orderId: teamData.orderId,
-          amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
+          amount: totalAmount,
           paymentId: teamData.paymentId,
           paymentMethod: teamData.paymentMethod,
           paymentTime: teamData.paymentTime,
@@ -467,6 +476,10 @@ app.get('/api/status/:orderId', async (req, res) => {
       return res.status(404).json({ message: 'Team not found' });
     }
 
+    const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
+    const serviceCharge = baseAmount * 0.02;
+    const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
+
     res.json({
       success: true,
       team: {
@@ -476,7 +489,7 @@ app.get('/api/status/:orderId', async (req, res) => {
         mobileNumber: teamData.leaderPhoneNumber,
         status: teamData.paymentStatus,
         orderId: teamData.orderId,
-        amount: teamData.participantCount * process.env.AMOUNT_PER_HEAD,
+        amount: totalAmount,
         paymentId: teamData.paymentId,
         paymentMethod: teamData.paymentMethod,
         paymentTime: teamData.paymentTime,

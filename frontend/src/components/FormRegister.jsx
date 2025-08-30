@@ -368,18 +368,16 @@ export default function FormRegister({ onSubmit }) {
               <div key={idx} className="member-card">
                 <div className="member-header">
                   <h4 className="member-title">Member {idx + 1}</h4>
-                  {form.members.length > 1 && (
-                    <button 
-                      type="button" 
-                      onClick={() => removeMember(idx)} 
-                      className="remove-member-btn"
-                      title="Remove member"
-                    >
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  )}
+                  <button 
+                    type="button" 
+                    onClick={() => removeMember(idx)} 
+                    className="remove-member-btn"
+                    title="Remove member"
+                  >
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
                 <div className="form-grid">
                   <label className="form-label">
@@ -500,7 +498,7 @@ export default function FormRegister({ onSubmit }) {
             <ul>
               <li>Team Leader: {form.leaderName || 'Not specified'}</li>
               <li>Leader Events: {form.leaderEvents.length} selected</li>
-              <li>Team Members: {form.members.length}</li>
+              <li>Team Members: {form.members.length + 1}</li>
               <li>College: {form.collegeName || 'Not specified'}</li>
             </ul>
           </div>
