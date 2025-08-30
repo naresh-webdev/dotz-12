@@ -126,14 +126,14 @@ async function sendConfirmationMail(name, email, teamKey) {
               <h1>DOTZ Symposium 2025</h1>
             </div>
             <div class="content">
-              <h2>Hello {{name}},</h2>
+              <h2>Hello ${name},</h2>
               <p>We are excited to confirm your registration for the <span class="highlight">DOTZ Symposium</span>!</p>
               
               <p><strong>Event Date:</strong> 15th September, 2025</p>
               <p>Please <strong>save the QR code below</strong>. It will be required for entry verification at the venue.</p>
 
               <div class="qr-section">
-                <img src="{{qrUrl}}" alt="QR Code for Entry">
+                <img src="${qrUrl}" alt="QR Code for Entry">
               </div>
 
               <p>We look forward to seeing you at the symposium!</p>
