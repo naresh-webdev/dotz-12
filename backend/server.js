@@ -137,7 +137,7 @@ app.post("/api/register", async (req, res) => {
       },
       order_meta: {
         return_url: `https://dotzv12.in/payment-success?order_id=${orderId}`,
-        notify_url: `https://dotz-12.onrender.com/api/payment/webhook`,
+        notify_url: `https://dotz-12-production.up.railway.app/api/payment/webhook`,
         payment_methods: "cc,dc,upi"
       },
     };
