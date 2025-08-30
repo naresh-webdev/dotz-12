@@ -322,7 +322,7 @@ app.post('/api/payment/webhook', async (req, res) => {
       paymentMethod
     } = req.body;
 
-    if (!orderId) {
+    if (!req.body.data.order.order_id) {
       console.error('Webhook missing orderId');
       return res.status(400).json({ message: 'Order ID is required' });
     }
