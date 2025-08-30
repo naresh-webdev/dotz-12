@@ -221,7 +221,7 @@ app.post('/api/payment/verify', async (req, res) => {
           await sendConfirmationMail(
             teamData.leaderName,
             teamData.leaderEmail,
-            teamKey
+            teamData.teamKey
           );
           console.log(`Confirmation email sent to ${teamData.leaderEmail}`);
           
