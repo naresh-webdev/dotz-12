@@ -1,173 +1,643 @@
-/* Events Page - Simple Design */
+/* Fresh Events Page Implementation */
 
-.events-page {
-  padding: 28px 0;
-  background: #0b1229;
+/* CRITICAL: Global Container Override - Bypass all global CSS constraints */
+.events-page .container,
+.events-page [class*="container"],
+.events-page [class*="grid"],
+.events-page [class*="wrapper"] {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
+/* React Component Override - Simplified Layout */
+.App .events-page,
+.main-content .events-page,
+[class*="content"] .events-page {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 0 !important;
+}
+
+/* Force Events Page to Use Full Width - Fixed Layout */
+.events-page {
+  background: #0b1229;
+  min-height: 100vh;
+  padding: 2rem 0;
+  width: 100% !important;
+  max-width: none !important;
+  overflow-x: hidden;
+  margin: 0 !important;
+}
+
+/* Page Header - Proper Centering */
 .page-header {
   text-align: center;
-  margin-bottom: 40px;
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 0 auto 3rem auto !important;
+  padding: 0 2rem !important;
+  box-sizing: border-box !important;
 }
 
 .page-header h1 {
-  font-size: clamp(28px, 3.2vw, 40px);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   color: #e5e7eb;
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .page-header p {
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   color: #9aa5cf;
-  max-width: 640px;
-  margin: 0 auto;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Section Layout - Proper Centering */
 .events-section {
-  margin: 48px 0;
+  max-width: 1400px !important;
+  width: 100% !important;
+  margin: 0 auto 4rem auto !important;
+  padding: 0 2rem !important;
+  box-sizing: border-box !important;
 }
 
 .section-title {
-  font-size: clamp(22px, 2.8vw, 32px);
-  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
   color: #e5e7eb;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 2.5rem;
   position: relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .section-title::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 64px;
+  width: 80px;
   height: 4px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, #3b82f6, #10b981);
   border-radius: 2px;
 }
 
+/* Events Grid Layout - 3 Cards Per Screen Width - Fixed Centering */
 .events-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 22px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(350px, 1fr)) !important;
+  gap: 2.5rem !important;
+  max-width: 1400px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+  justify-items: center !important;
+  box-sizing: border-box !important;
 }
 
-.event-card {
-  position: relative;
-  background: #0f1a3d;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid #1f2a54;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+/* Event Card Structure - Enhanced with Hover Effects - Specific Scoping */
+.events-page .event-card {
+  background: linear-gradient(145deg, #0f1a3d 0%, rgba(31, 42, 84, 0.9) 100%) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  border: 1px solid #1f2a54 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  min-height: 480px !important;
+  width: 100% !important;
+  max-width: 450px !important;
+  min-width: 350px !important;
+  cursor: pointer;
 }
 
-.event-card::before {
-  content: '';
+.events-page .event-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: #3b82f6;
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25), 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(145deg, #1a2754 0%, rgba(45, 62, 104, 0.95) 100%);
+}
+
+/* Category Tag - Enhanced with White Text and Hover Border - Events Page Specific */
+.events-page .event-category-tag {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,.06));
-  opacity: 0;
-  transition: opacity .22s ease;
-  z-index: 1;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+  cursor: pointer;
 }
 
-.event-card:hover {
-  transform: translateY(-6px);
-  border-color: #d1d5db;
-  box-shadow: 0 16px 32px rgba(0,0,0,.12);
+.events-page .event-category-tag span {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+  display: block !important;
+  line-height: 1 !important;
 }
 
-.event-card:hover::before {
-  opacity: 1;
+.events-page .event-category-tag.technical {
+  background: rgba(59, 130, 246, 0.25) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
 }
 
-.event-image {
+.events-page .event-category-tag.non-technical {
+  background: rgba(16, 185, 129, 0.25) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.events-page .event-category-tag:hover {
+  transform: scale(1.05);
+  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 1) !important;
+}
+
+.events-page .event-category-tag:hover span {
+  color: #ffffff !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 1) !important;
+}
+
+.events-page .event-category-tag.technical:hover {
+  background: rgba(59, 130, 246, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.events-page .event-category-tag.non-technical:hover {
+  background: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+/* Image Section - Enhanced Hover Effects - Events Page Specific */
+.events-page .event-image {
   width: 100%;
-  height: 200px;
+  height: 280px;
   overflow: hidden;
+  position: relative;
   background: #0b1229;
+  transition: all 0.3s ease;
 }
 
-.event-image img {
+.events-page .event-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.0);
-  transition: transform .35s ease;
-  display: block;
+  object-position: center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter: brightness(0.9);
 }
 
-.event-card:hover .event-image img {
-  transform: scale(1.06);
+.events-page .event-card:hover .event-image {
+  transform: scale(1.02);
 }
 
-.event-content {
-  position: relative;
-  z-index: 2;
-  padding: 18px 18px 16px;
+.events-page .event-card:hover .event-image img {
+  transform: scale(1.08);
+  filter: brightness(1.1) contrast(1.1);
 }
 
-.event-title {
-  font-size: 1.15rem;
-  font-weight: 800;
+.events-page .event-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.1) 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.events-page .event-card:hover .event-image-overlay {
+  opacity: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(0, 0, 0, 0.2) 60%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* Content Section - Enhanced with Hover Effects - Events Page Specific */
+.events-page .event-content {
+  padding: 2.5rem;
+  background: linear-gradient(
+    145deg,
+    rgba(15, 26, 61, 0.8) 0%,
+    rgba(31, 42, 84, 0.6) 100%
+  );
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.events-page .event-card:hover .event-content {
+  background: linear-gradient(
+    145deg,
+    rgba(25, 36, 71, 0.9) 0%,
+    rgba(41, 52, 94, 0.8) 100%
+  );
+  backdrop-filter: blur(15px);
+}
+
+.events-page .event-title {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #e5e7eb;
-  margin-bottom: 8px;
-  line-height: 1.35;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
 }
 
-.event-description {
-  color: #9aa5cf;
-  margin-bottom: 14px;
-  line-height: 1.6;
-  font-size: .95rem;
-}
-
-/* Actions */
-.event-content .btn {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.event-content .btn.btn-primary {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  border: none;
-  box-shadow: 0 8px 22px rgba(102,126,234,.25);
-}
-
-.event-content .btn.btn-primary:hover {
-  filter: brightness(1.03);
+.events-page .event-card:hover .event-title {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(102,126,234,.3);
 }
 
-/* Subtle hover lift for whole grid item on focus */
-.event-card:focus-within {
-  outline: 2px solid #a5b4fc;
-  outline-offset: 2px;
-  transform: translateY(-4px);
+.events-page .event-description {
+  color: #9aa5cf;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  transition: all 0.3s ease;
 }
 
-/* Responsive */
-@media (max-width: 860px) {
+.events-page .event-card:hover .event-description {
+  color: #b8c5e8;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styling - Enhanced Hover Effects - Events Page Specific */
+.events-page .event-content .btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.events-page .event-content .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.events-page .event-content .btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #4f96ff, #2563eb);
+  filter: brightness(1.1);
+}
+
+.events-page .event-content .btn:hover::before {
+  left: 100%;
+}
+
+.events-page .event-card:hover .event-content .btn {
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+.events-page .event-content .btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.events-page .event-content .btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* Focus States and Additional Animations - Events Page Specific */
+.events-page .event-card:focus-within {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 16px 48px rgba(59, 130, 246, 0.2);
+}
+
+/* Pulse Animation on Card Load - Events Page Specific */
+@keyframes eventsCardPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+.events-page .event-card {
+  animation: eventsCardPulse 2s ease-in-out infinite;
+}
+
+.events-page .event-card:hover {
+  animation: none;
+}
+
+/* Shimmer Effect for Enhanced Visual Appeal - Events Page Specific */
+@keyframes eventsShimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.events-page .event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.03),
+    transparent
+  );
+  background-size: 1000px 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.events-page .event-card:hover::before {
+  opacity: 1;
+  animation: eventsShimmer 1.5s ease-in-out;
+}
+
+/* Responsive Design - 3-Column Layout with Proper Centering */
+@media (min-width: 768px) {
   .events-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    padding: 0 2rem !important;
+    max-width: 1200px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+  
+  .event-card {
+    max-width: 380px !important;
+    min-width: 300px !important;
+    min-height: 450px !important;
+  }
+  
+  .event-image {
+    height: 240px !important;
+  }
+  
+  .event-content {
+    padding: 2rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .events-grid {
+    grid-template-columns: repeat(3, minmax(350px, 1fr)) !important;
+    gap: 2.5rem !important;
+    padding: 0 2rem !important;
+    max-width: 1300px !important;
+  }
+  
+  .event-card {
+    max-width: 420px !important;
+    min-width: 350px !important;
+    min-height: 480px !important;
+  }
+  
+  .event-image {
+    height: 260px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .events-grid {
+    grid-template-columns: repeat(3, minmax(380px, 1fr)) !important;
+    gap: 3rem !important;
+    padding: 0 3rem !important;
+    max-width: 1400px !important;
+  }
+  
+  .event-card {
+    max-width: 450px !important;
+    min-width: 380px !important;
+    min-height: 500px !important;
+  }
+  
+  .event-image {
+    height: 280px !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .events-grid {
+    grid-template-columns: repeat(3, minmax(400px, 1fr)) !important;
+    gap: 3.5rem !important;
+    padding: 0 4rem !important;
+    max-width: 1500px !important;
+  }
+  
+  .event-card {
+    max-width: 480px !important;
+    min-width: 400px !important;
+    min-height: 520px !important;
+  }
+  
+  .event-image {
+    height: 300px !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .events-grid {
+    grid-template-columns: repeat(3, minmax(420px, 1fr)) !important;
+    gap: 4rem !important;
+    padding: 0 5rem !important;
+    max-width: 1600px !important;
+  }
+  
+  .event-card {
+    max-width: 500px !important;
+    min-width: 420px !important;
+    min-height: 540px !important;
+  }
+  
+  .event-image {
+    height: 320px !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .events-grid {
+    grid-template-columns: repeat(3, minmax(450px, 1fr)) !important;
+    gap: 5rem !important;
+    padding: 0 6rem !important;
+    max-width: 1800px !important;
+  }
+  
+  .event-card {
+    max-width: 550px !important;
+    min-width: 450px !important;
+    min-height: 560px !important;
+  }
+  
+  .event-image {
+    height: 340px !important;
+  }
+  
+  .event-content {
+    padding: 2.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .events-page {
+    padding: 1.5rem 0;
+  }
+  
+  .page-header {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+  
+  .events-section {
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+  }
+  
+  .events-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 0 1rem !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+  }
+  
+  .event-card {
+    min-height: 420px !important;
+    max-width: 100% !important;
+    min-width: auto !important;
+  }
+  
+  .event-image {
+    height: 220px !important;
+  }
+  
+  .event-content {
+    padding: 1.75rem !important;
+  }
+  
+  .events-page .event-category-tag {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  .events-page .event-category-tag:hover {
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* Tablet landscape - 2 columns */
+@media (min-width: 600px) and (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: repeat(2, minmax(250px, 1fr)) !important;
+    gap: 1.5rem !important;
+    padding: 0 1rem !important;
+  }
+  
+  .event-card {
+    min-height: 400px !important;
+    max-width: 350px !important;
+  }
+  
+  .event-image {
+    height: 200px !important;
   }
 }
 
 @media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .event-card {
+    min-height: 380px;
+    border-radius: 12px;
+  }
+  
   .event-image {
     height: 180px;
   }
   
   .event-content {
-    padding: 16px;
+    padding: 1.25rem;
+  }
+  
+  .event-title {
+    font-size: 1.25rem;
+  }
+  
+  .event-description {
+    font-size: 0.9rem;
+  }
+  
+  .event-category-tag {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+    border-radius: 6px;
   }
 }

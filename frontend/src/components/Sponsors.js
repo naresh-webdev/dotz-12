@@ -15,7 +15,7 @@ const coSponsors = [
 
 const Sponsors = () => {
   return (
-    <div className="sponsors-page professional">
+    <div className="sponsors-page sponsors-theme professional">
       <section className="sponsors-hero">
         <div className="hero-content">
           <h1>Our Sponsors</h1>

@@ -38,22 +38,24 @@ function PaymentPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-4">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-950" style={{background: '#0b1229'}}>
+        <div className="flex items-center justify-center min-h-screen p-4">
+          <div className="bg-gradient-to-br from-red-900/20 to-red-800/10 rounded-2xl shadow-2xl p-8 max-w-md w-full border border-red-500/20 backdrop-blur-xl">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500/20 to-red-600/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/30">
+                <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </div>
+              <h2 className="text-2xl font-semibold text-red-300 mb-2">Payment Error</h2>
+              <p className="text-gray-300 mb-6">{error}</p>
+              <button
+                onClick={() => navigate('/')}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Back to Home
+              </button>
             </div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">Payment Error</h2>
-            <p className="text-gray-600 mb-6">{error}</p>
-            <button
-              onClick={() => navigate('/')}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200"
-            >
-              Back to Booking
-            </button>
           </div>
         </div>
       </div>
@@ -61,11 +63,17 @@ function PaymentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-gray-600">Initializing payment gateway...</p>
-        <p className="text-sm text-gray-400 mt-2">Please wait while we redirect you to the payment page</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-950" style={{background: '#0b1229'}}>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="text-center">
+          <div className="relative mb-6">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500/30 border-t-blue-400 mx-auto"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-300 animate-ping"></div>
+          </div>
+          <h2 className="text-xl font-semibold text-blue-300 mb-2">Initializing Payment Gateway</h2>
+          <p className="text-gray-300 mb-1">Please wait while we redirect you to the payment page</p>
+          <p className="text-sm text-gray-400">This may take a few moments...</p>
+        </div>
       </div>
     </div>
   );

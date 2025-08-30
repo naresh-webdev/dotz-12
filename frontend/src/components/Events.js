@@ -2,18 +2,30 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Events.css';
 
+// Import images from src/images/event_posters/
+import algoverseXImg from '../images/event_posters/algoverse_x.jpeg';
+import booyahCarnivalImg from '../images/event_posters/booyah_carnival.jpeg';
+import brainCompilerImg from '../images/event_posters/brain_compiler.jpeg';
+import catchCrunchImg from '../images/event_posters/catch_crunch.jpeg';
+import designWarriorImg from '../images/event_posters/design_warrior.jpeg';
+import justAMinuteImg from '../images/event_posters/just_a_minute.jpeg';
+import rhythmRhymeImg from '../images/event_posters/rhythm_rhyme.jpeg';
+
+// Note: Missing images - using placeholders for now
+const visionXImg = '/images/placeholder.jpg';
+
 const technicalEvents = [
-  { id: 'tech1', title: 'Code Sprint', description: 'Rapid coding challenge to test your algorithms and speed.', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop', category: 'Technical' },
-  { id: 'tech2', title: 'Debug Duel', description: 'Find and fix bugs in real-world codebases.', image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop', category: 'Technical' },
-  { id: 'tech3', title: 'UI/UX Jam', description: 'Design intuitive interfaces for a modern app.', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop', category: 'Technical' },
-  { id: 'tech4', title: 'Cloud Wars', description: 'Architect resilient cloud deployments with limited resources.', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop', category: 'Technical' }
+  { id: 'tech1', title: 'Brain Compiler', description: 'Test your logical thinking and programming skills with Puzzle & Aptitude Quest and Code Reverse challenges. Two-round competition focusing on analytical ability and code generation.', image: brainCompilerImg, category: 'Technical' },
+  { id: 'tech2', title: 'Design Warrior', description: 'UI/UX Design Contest with Quiz Challenge and On-Name Design rounds. Teams of 3 compete in hands-on design challenges with creativity, usability, and visual appeal judging.', image: designWarriorImg, category: 'Technical' },
+  { id: 'tech3', title: 'Algoverse X', description: 'Dive into the universe of algorithms with Code Quest MCQs and HackerRank Showdown challenges. Two-round competition testing logical thinking and problem-solving skills.', image: algoverseXImg, category: 'Technical' },
+  { id: 'tech4', title: 'Vision X', description: 'Paper Presentation event showcasing innovative research and technical skills. Students present before judges focusing on originality, clarity, and technical depth.', image: visionXImg, category: 'Technical' }
 ];
 
 const nonTechnicalEvents = [
-  { id: 'non1', title: 'Quiz Quest', description: 'A fast-paced general knowledge and tech-leaning quiz.', image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop', category: 'Non-Technical' },
-  { id: 'non2', title: 'Pitch Perfect', description: 'Pitch your startup idea in 3 minutes.', image: 'https://images.unsplash.com/photo-1494173853739-c21f58b16055?q=80&w=1200&auto=format&fit=crop', category: 'Non-Technical' },
-  { id: 'non3', title: 'Design Dash', description: 'Poster design contest with a theme revealed on the spot.', image: 'https://images.unsplash.com/photo-1529336953121-4a32006c1d5a?q=80&w=1200&auto=format&fit=crop', category: 'Non-Technical' },
-  { id: 'non4', title: 'Treasure Hunt', description: 'Solve clues and race to the finish across campus.', image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop', category: 'Non-Technical' }
+  { id: 'non1', title: 'Rhythm & Rhyme', description: 'Test your spelling and music knowledge with Spell Bee and Guess the Lyrics challenges. Two-round competition testing accuracy, speed, and musical knowledge.', image: rhythmRhymeImg, category: 'Non-Technical' },
+  { id: 'non2', title: 'Just A Minute', description: 'Think fast and speak faster in this exciting impromptu speaking challenge. Image-to-Word and Category Bidding rounds test your quick thinking.', image: justAMinuteImg, category: 'Non-Technical' },
+  { id: 'non3', title: 'Booyah Carnival', description: 'Join the ultimate fun carnival with games, challenges, and entertainment galore.', image: booyahCarnivalImg, category: 'Non-Technical' },
+  { id: 'non4', title: 'Catch & Crunch', description: 'Quick thinking meets quick reflexes in this fast-paced mental and physical challenge.', image: catchCrunchImg, category: 'Non-Technical' }
 ];
 
 const Events = () => {
@@ -29,8 +41,12 @@ const Events = () => {
         <div className="events-grid">
           {technicalEvents.map((event) => (
             <div className="event-card" key={event.id}>
+              <div className="event-category-tag technical">
+                <span>TECH</span>
+              </div>
               <div className="event-image">
                 <img src={event.image} alt={event.title} />
+                <div className="event-image-overlay"></div>
               </div>
               <div className="event-content">
                 <h3 className="event-title">{event.title}</h3>
@@ -47,8 +63,12 @@ const Events = () => {
         <div className="events-grid">
           {nonTechnicalEvents.map((event) => (
             <div className="event-card" key={event.id}>
+              <div className="event-category-tag non-technical">
+                <span>NON-TECH</span>
+              </div>
               <div className="event-image">
                 <img src={event.image} alt={event.title} />
+                <div className="event-image-overlay"></div>
               </div>
               <div className="event-content">
                 <h3 className="event-title">{event.title}</h3>

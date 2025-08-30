@@ -83,6 +83,8 @@ const Home = () => {
   const [progressRemaining, setProgressRemaining] = useState(100);
   
   const heroRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [cursorVariant, setCursorVariant] = useState('default');
 
   useEffect(() => {
     setIsVisible(true);
@@ -119,15 +121,25 @@ const Home = () => {
     calculateTime();
     const t = setInterval(calculateTime, 60 * 1000);
     
-    // Simple mouse movement for parallax
+    // Enhanced mouse movement with smooth tracking
     const onMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
       const x = (e.clientX / innerWidth) * 2 - 1; // -1..1
       const y = (e.clientY / innerHeight) * 2 - 1; // -1..1
+      
+      // Smooth cursor position tracking
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      
+      // Enhanced parallax with smoother transitions
       const root = document.documentElement;
       root.style.setProperty('--mx', x.toFixed(3));
       root.style.setProperty('--my', y.toFixed(3));
+      
+      // Additional smooth variables for different layers
+      root.style.setProperty('--cursor-x', `${e.clientX}px`);
+      root.style.setProperty('--cursor-y', `${e.clientY}px`);
     };
+    
     window.addEventListener('mousemove', onMouseMove);
 
     return () => {
@@ -136,6 +148,14 @@ const Home = () => {
       window.removeEventListener('mousemove', onMouseMove);
     };
   }, []);
+
+  const handleMouseEnter = () => {
+    setCursorVariant('text');
+  };
+
+  const handleMouseLeave = () => {
+    setCursorVariant('default');
+  };
 
   const toggleFaq = (idx) => {
     setOpenIdx(openIdx === idx ? null : idx);
@@ -167,22 +187,26 @@ const Home = () => {
         <div className="hero-background">
           <div className="hero-stars"></div>
           <div className="hero-particles"></div>
-          <div className="hero-grid"></div>
           <div className="hero-aurora"></div>
-          <div className="hero-shooting-stars">
-            <div className="shooting-star"></div>
-            <div className="shooting-star"></div>
-            <div className="shooting-star"></div>
+          
+          {/* Minimal Animation Elements */}
+          <div className="hero-minimal-floating">
+            <div className="minimal-circle circle-1"></div>
+            <div className="minimal-circle circle-2"></div>
+            <div className="minimal-circle circle-3"></div>
           </div>
-          <div className="hero-orbs">
-            <span className="orb o1"></span>
-            <span className="orb o2"></span>
-            <span className="orb o3"></span>
+          
+          <div className="hero-minimal-lines">
+            <div className="minimal-line line-1"></div>
+            <div className="minimal-line line-2"></div>
           </div>
-          <div className="hero-energy-waves">
-            <div className="energy-wave wave-1"></div>
-            <div className="energy-wave wave-2"></div>
-            <div className="energy-wave wave-3"></div>
+          
+          <div className="hero-minimal-dots">
+            <span className="minimal-dot dot-1"></span>
+            <span className="minimal-dot dot-2"></span>
+            <span className="minimal-dot dot-3"></span>
+            <span className="minimal-accent accent-1"></span>
+            <span className="minimal-accent accent-2"></span>
           </div>
         </div>
         
@@ -217,6 +241,8 @@ const Home = () => {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 }
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <motion.span 
               className="title-main"
@@ -227,6 +253,9 @@ const Home = () => {
                 duration: 6,
                 repeat: Infinity,
                 ease: "linear"
+              }}
+              style={{
+                transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
               }}
             >
               DoTz
@@ -240,6 +269,9 @@ const Home = () => {
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
+              }}
+              style={{
+                transform: `translate(${mousePosition.x * 0.005}px, ${mousePosition.y * 0.005}px)`
               }}
             >
               V12.0
@@ -309,30 +341,6 @@ const Home = () => {
         </div>
       </motion.section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="container stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon">🎯</div>
-            <div className="stat-number">5+</div>
-            <div className="stat-label">Events</div>
-            <div className="stat-desc">Technical & Non-Technical</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">👥</div>
-            <div className="stat-number">100+</div>
-            <div className="stat-label">Students</div>
-            <div className="stat-desc">Pan-India Participation</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">🏛️</div>
-            <div className="stat-number">12th</div>
-            <div className="stat-label">Year</div>
-            <div className="stat-desc">11 Years of Excellence</div>
-          </div>
-        </div>
-      </section>
-
       {/* Info Cards */}
       <section className="info-section">
         <div className="container info-grid">
@@ -381,7 +389,7 @@ const Home = () => {
               With a myriad of technical and non-technical events, DoTz promises to captivate and impress. Don't miss out on this opportunity to participate and shine in your field!
             </p>
             <div className="about-actions">
-              <Link to="/about" className="btn-outline">Learn More</Link>
+              <Link to="/about" className="btn-secondary">Learn More</Link>
               <Link to="/events" className="btn-primary">View Events</Link>
             </div>
           </div>
@@ -544,38 +552,6 @@ const Home = () => {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Contact Strip */}
-      <section className="contact-strip">
-        <div className="container strip-container">
-          <div className="strip-content">
-            <div className="strip-item">
-              <div className="strip-icon">📍</div>
-              <div className="strip-info">
-                <div className="strip-label">Location</div>
-                <div className="strip-text">University College of Engineering Tindivanam, Melpakkam, Tamil Nadu, India.</div>
-              </div>
-            </div>
-            <div className="strip-item">
-              <div className="strip-icon">📞</div>
-              <div className="strip-info">
-                <div className="strip-label">Phone</div>
-                <div className="strip-text">+91 9566778342</div>
-              </div>
-            </div>
-            <div className="strip-item">
-              <div className="strip-icon">✉️</div>
-              <div className="strip-info">
-                <div className="strip-label">Email</div>
-                <div className="strip-text">dotzversion12@gmail.com</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="container strip-footer">
-          <div className="footer-text">Designed and Developed by UCET IT Team</div>
         </div>
       </section>
     </div>
