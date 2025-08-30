@@ -149,16 +149,7 @@ app.post("/api/register", async (req, res) => {
 
     if (cashfreeResponse.data.payment_session_id) {
 
-      // try {
-      //   await sendConfirmationMail(
-      //   teamData.leaderName,
-      //   teamData.leaderEmail,
-      //   teamKey
-      // );
-      // } catch {
-      //   // re("Email sending failed");
-      //   return res.status(500).json({ message: "Email sending failed" });
-      // }
+      
       console.log("session Id is created")
       return res.status(200).json({
         success: true,
@@ -341,6 +332,17 @@ app.post('/api/payment/webhook', async (req, res) => {
           teamData.paymentTime = paymentTime;
           teamData.bankReference = bankReference;
           console.log(`Payment successful for order ${orderId}`);
+
+          try {
+            await sendConfirmationMail(
+            teamData.leaderName,
+            teamData.leaderEmail,
+            teamKey
+          );
+          } catch {
+            // re("Email sending failed");
+            return res.status(500).json({ message: "Email sending failed" });
+          }
           break;
           
         case 'EXPIRED':
