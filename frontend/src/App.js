@@ -12,6 +12,10 @@ import EventDetail from './components/EventDetail';
 import FormRegister from './components/FormRegister';
 import PaymentSuccess from './components/PaymentSuccess';
 import PaymentPage from './components/PaymentPage';
+import Footer from './components/Footer';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import RefundPolicy from './components/RefundPolicy';
+import TermsConditions from './components/TermsConditions';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,15 +45,18 @@ function App() {
 
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      // Prevent body scroll when menu is open
-      document.body.style.overflow = 'hidden';
+      // Prevent both vertical and horizontal scroll when menu is open
+      document.body.classList.add('menu-open');
+      document.documentElement.classList.add('menu-open');
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.classList.remove('menu-open');
+      document.documentElement.classList.remove('menu-open');
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'unset';
+      document.body.classList.remove('menu-open');
+      document.documentElement.classList.remove('menu-open');
     };
   }, [isMenuOpen]);
 
@@ -104,8 +111,14 @@ function App() {
             <Route path='/payment' element={<PaymentPage />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-failed" element={<PaymentFailed />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
           </Routes>
         </main>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </Router>
   );
