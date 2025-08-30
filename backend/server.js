@@ -62,10 +62,89 @@ async function sendConfirmationMail(name, email, teamKey) {
       to: [{ email, name }],
       subject: "Registration Successful 🎉",
       htmlContent: `
-        <h2>Hi ${name},</h2>
-        <p>Thanks for registering with <b>Dotz V12</b>! 🚀</p>
-        <p>Your Team QR Code:</p>
-        <img src="${qrUrl}" alt="Team QR Code" />
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>DOTZ Symposium Registration</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background: #f5f7fa;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 30px auto;
+              background: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            }
+            .header {
+              background: linear-gradient(135deg, #4f46e5, #6366f1);
+              padding: 20px;
+              text-align: center;
+              color: white;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 28px;
+            }
+            .content {
+              padding: 30px;
+              color: #333;
+            }
+            .content h2 {
+              color: #4f46e5;
+            }
+            .qr-section {
+              text-align: center;
+              margin: 30px 0;
+            }
+            .qr-section img {
+              width: 200px;
+              height: 200px;
+            }
+            .footer {
+              background: #f3f4f6;
+              padding: 20px;
+              text-align: center;
+              font-size: 12px;
+              color: #6b7280;
+            }
+            .highlight {
+              font-weight: bold;
+              color: #111827;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>DOTZ Symposium 2025</h1>
+            </div>
+            <div class="content">
+              <h2>Hello {{name}},</h2>
+              <p>We are excited to confirm your registration for the <span class="highlight">DOTZ Symposium</span>!</p>
+              
+              <p><strong>Event Date:</strong> 15th September, 2025</p>
+              <p>Please <strong>save the QR code below</strong>. It will be required for entry verification at the venue.</p>
+
+              <div class="qr-section">
+                <img src="{{qrUrl}}" alt="QR Code for Entry">
+              </div>
+
+              <p>We look forward to seeing you at the symposium!</p>
+            </div>
+            <div class="footer">
+              This is an automated email. Please do not reply.<br>
+              © 2025 DOTZ Symposium Committee
+            </div>
+          </div>
+        </body>
+        </html>
       `,
     };
 
