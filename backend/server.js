@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const { Cashfree, CFEnvironment } = require('cashfree-pg');
 const nodemailer = require("nodemailer");
-
+const SibApiV3Sdk = require('@sendinblue/client');
 const TeamData = require("./models/TeamData.Schema");
 const AdminData = require("./models/Admin.Schema");
 
@@ -41,52 +41,40 @@ const cashfree = new Cashfree(
 );
 
 // ---------- Nodemailer Setup ----------
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  auth: {
-    user: "955abb001@smtp-brevo.com", // usually your email or login
-    pass: "6mYKXdfatpxU2I01", // API key from Brevo
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp-relay.brevo.com",
+//   port: 587,
+//   auth: {
+//     user: "955abb001@smtp-brevo.com", // usually your email or login
+//     pass: "6mYKXdfatpxU2I01", // API key from Brevo
+//   },
+// });
+
+const brevo = new SibApiV3Sdk.TransactionalEmailsApi();
+brevo.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.EMAIL_SENDER_API);
 
 async function sendConfirmationMail(name, email, teamKey) {
   try {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-      teamKey
-    )}`;
-    await transporter.sendMail({
-      from: '"Team Dotz" <symposium@dotzv12.in>',
-      to: email,
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(teamKey)}`;
+
+    const sendSmtpEmail = {
+      sender: { name: "Team Dotz", email: "symposium@dotzv12.in" },
+      to: [{ email, name }],
       subject: "Registration Successful 🎉",
-      html: `
-        <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif; overflow: hidden;">
-          <div style="background: linear-gradient(90deg, #6a11cb, #2575fc); padding: 20px; text-align: center; color: #fff;">
-            <h1 style="margin: 0; font-size: 28px;">Dotz V12</h1>
-          </div>
-          <div style="padding: 25px; text-align: center; color: #333;">
-            <h2 style="margin-bottom: 10px;">Hi ${name},</h2>
-            <p style="font-size: 16px; line-height: 1.6;">Thanks for registering with <b>Dotz V12</b>!<br/>
-            We’re thrilled to have you onboard 🚀</p>
-            <hr style="margin: 25px 0; border: none; border-top: 1px solid #eee;">
-            <p style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Your Team QR Code:</p>
-            <div style="display: inline-block; padding: 15px; border: 2px dashed #6a11cb; border-radius: 12px; background: #f9f9ff;">
-              <img src="${qrUrl}" alt="Team QR Code" style="width: 150px; height: 150px;" />
-            </div>
-            <p style="margin-top: 20px; font-size: 15px; color: #666;">Scan this QR code to access your team details anytime.</p>
-          </div>
-          <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 14px; color: #777;">
-            <p style="margin: 0;">Best Regards,<br/><b>Team Dotz</b></p>
-          </div>
-        </div>
+      htmlContent: `
+        <h2>Hi ${name},</h2>
+        <p>Thanks for registering with <b>Dotz V12</b>! 🚀</p>
+        <p>Your Team QR Code:</p>
+        <img src="${qrUrl}" alt="Team QR Code" />
       `,
-    });
-    console.log("Confirmation mail sent to:", email);
+    };
+
+    await brevo.sendTransacEmail(sendSmtpEmail);
+    console.log("✅ Confirmation mail sent to:", email);
   } catch (err) {
-    console.error("Error sending mail:", err);
+    console.error("❌ Error sending mail via Brevo API:", err.message);
   }
 }
-
 // ---------- Register Team ----------
 app.post("/api/register", async (req, res) => {
   console.log("inside api/register")
