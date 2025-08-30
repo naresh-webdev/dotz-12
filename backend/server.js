@@ -217,6 +217,15 @@ app.post('/api/payment/verify', async (req, res) => {
           teamData.paymentTime = paymentDetails.payment_time;
           teamData.bankReference = paymentDetails.bank_reference;
           console.log(`Payment verified as successful for order ${orderId}`);
+          
+          await sendConfirmationMail(
+            teamData.leaderName,
+            teamData.leaderEmail,
+            teamKey
+          );
+          console.log(`Confirmation email sent to ${teamData.leaderEmail}`);
+          
+          
           break;
           
         case 'EXPIRED':
@@ -362,12 +371,7 @@ app.post('/api/payment/webhook', async (req, res) => {
       console.error(`Team not found for orderId: ${orderId}`);
     }
       
-    await sendConfirmationMail(
-      teamData.leaderName,
-      teamData.leaderEmail,
-      teamKey
-    );
-    console.log(`Confirmation email sent to ${teamData.leaderEmail}`);
+    
 
     res.json({ 
       success: true, 
