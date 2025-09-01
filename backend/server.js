@@ -194,7 +194,7 @@ app.post("/api/register", async (req, res) => {
     // Create Cashfree order using SDK
     // Calculate total amount and add 2% service charge
     const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
-    const serviceCharge = baseAmount * 0.02;
+    const serviceCharge = baseAmount * 0.04;
     const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
     
     const orderData = {
@@ -326,7 +326,7 @@ app.post('/api/payment/verify', async (req, res) => {
 
       
       const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
-      const serviceCharge = baseAmount * 0.02;
+      const serviceCharge = baseAmount * 0.04;
       const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
       // Return both verification result and booking data
       res.json({
@@ -477,7 +477,7 @@ app.get('/api/status/:orderId', async (req, res) => {
     }
 
     const baseAmount = teamData.participantCount * process.env.AMOUNT_PER_HEAD;
-    const serviceCharge = baseAmount * 0.02;
+    const serviceCharge = baseAmount * 0.04;
     const totalAmount = Math.round((baseAmount + serviceCharge) * 100) / 100; // round to 2 decimals
 
     res.json({
