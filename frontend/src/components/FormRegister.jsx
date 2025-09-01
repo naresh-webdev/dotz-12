@@ -30,7 +30,6 @@ const MEMBER_EVENT_OPTIONS = [
 ];
 
 export default function FormRegister({ onSubmit }) {
-
   const [form, setForm] = useState({
     participantCount: "",
     leaderName: "",
@@ -44,7 +43,7 @@ export default function FormRegister({ onSubmit }) {
     members: [ { ...initialMember } ],
     leaderEvents: [],
   });
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Handler for simple fields
@@ -127,27 +126,26 @@ export default function FormRegister({ onSubmit }) {
   // ---------- Submit Handler ----------
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
     // compute the participantCount
     const participantCount = form.members.length + 1; // +1 for the leader
-    console.log("participant Count : ", participantCount);
-
     // Validate leader events
     if (form.leaderEvents.length < 2) {
       alert("❌ Please select at least 2 events for the leader.");
+      setLoading(false);
       return;
     }
-
     // Validate member events
     for (const mem of form.members) {
       if (mem.events.length < 1) {
         alert(`❌ Please select at least 1 event for member ${mem.name || ''}.`);
+        setLoading(false);
         return;
       }
     }
-
     // Prepare form data with correct participantCount
     const formData = { ...form, participantCount };
-
     try {
       const response = await fetch("https://dotz-12-production.up.railway.app/api/register", {
         method: "POST",
@@ -155,11 +153,7 @@ export default function FormRegister({ onSubmit }) {
         body: JSON.stringify(formData),
       });
       const result = await response.json();
-      console.log("RESULT FROM REGISTERING USER : ", result);
-      console.log("User Data Successfully Saved to MongoDB");
-
       if (response.ok) {
-        // Registration successful, navigate to payment
         navigate('/payment', {
           state: {
             orderId: result.orderId,
@@ -167,7 +161,6 @@ export default function FormRegister({ onSubmit }) {
             teamData: result.team
           }
         });
-        alert("✅ Payment successful and team registered!");
       } else {
         alert("❌ Failed to get payment token from server.");
       }
@@ -175,11 +168,7 @@ export default function FormRegister({ onSubmit }) {
       alert("❌ Team registration failed after payment!");
       console.error("❌ Team registration failed:", err);
     }
-
-    
-
-
-    
+    setLoading(false);
   };
 
   return (
@@ -502,11 +491,15 @@ export default function FormRegister({ onSubmit }) {
               <li>College: {form.collegeName || 'Not specified'}</li>
             </ul>
           </div>
-          <button type="submit" className="submit-btn">
-            <svg className="submit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-            </svg>
-            Complete Registration & Pay
+          <button type="submit" className={`submit-btn${loading ? ' loading' : ''}`} disabled={loading}>
+            {loading ? (
+              <span className="spinner" aria-label="Loading"></span>
+            ) : (
+              <svg className="submit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+            )}
+            {loading ? 'Registering...' : 'Complete Registration & Pay'}
           </button>
         </div>
       </form>

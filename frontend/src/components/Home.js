@@ -50,7 +50,7 @@ const phases = [
     id: 2,
     title: "Shortlisting",
     subtitle: "Phase 2",
-    date: "12 Sep 2025",
+    date: "13 Sep 2025",
     icon: "✅",
     description: "Selection of qualified participants",
     status: "upcoming"
@@ -97,7 +97,7 @@ const Home = () => {
     // Calculate dynamic days left and registration progress
     const calculateTime = () => {
       const now = new Date();
-      const eventDate = new Date('2025-09-15T00:00:00');
+      const eventDate = new Date('2025-09-13T00:00:00');
       const msPerDay = 24 * 60 * 60 * 1000;
 
       const diffMs = eventDate - now;
@@ -454,7 +454,7 @@ const Home = () => {
               <h2 className="section-title">Registration</h2>
               <div className="reg-deadline">
                 <span className="deadline-label">Deadline</span>
-                <span className="deadline-date">10 Sep 2025</span>
+                <span className="deadline-date">13 Sep 2025</span>
               </div>
             </div>
             <div className="reg-info">

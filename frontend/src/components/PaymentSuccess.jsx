@@ -65,11 +65,11 @@ const PaymentSuccess = () => {
           <div className="bg-gradient-to-br from-red-800/40 to-red-700/20 rounded-2xl shadow-2xl p-8 max-w-md w-full border border-red-400/30 backdrop-blur-xl flex flex-col justify-center h-full min-h-[350px]">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-red-400/40 to-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-300/40">
-                <svg className="w-8 h-8 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-red-200" fill="#ff0000" stroke="#ff0000" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-red-100 mb-2">Payment Error</h2>
+              <h2 className="text-2xl font-semibold text-red-100 mb-2">Payment Error😞, Please contact <bold>9344735611</bold></h2>
               <p className="text-red-50 mb-6">{error}</p>
               <button
                 onClick={() => window.location.href = '/'}
@@ -90,7 +90,7 @@ const PaymentSuccess = () => {
         <div className="bg-gradient-to-br from-green-700/40 to-emerald-600/20 rounded-2xl shadow-2xl p-8 max-w-md w-full border border-green-300/30 backdrop-blur-xl">
           <div className="text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-green-300/60 to-emerald-200/40 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-200/40">
-              <svg className="w-8 h-8 text-green-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-8 h-8 text-green-100" fill="none" stroke="#00ff00" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
             </div>
