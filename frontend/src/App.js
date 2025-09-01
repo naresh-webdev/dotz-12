@@ -81,7 +81,7 @@ function App() {
               <div className="mobile-menu-header">
                 <h3>Menu</h3>
                 <button className="close-menu-btn" onClick={closeMenu}>
-                  <span>×</span>
+                  {/* <span>×</span> */}
                 </button>
               </div>
               <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
