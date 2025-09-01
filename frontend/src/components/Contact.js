@@ -8,8 +8,8 @@ const Contact = () => {
 
   return (
     <div className="contact-page enhanced">
-      {/* Page Header Section */}
-      <header className="page-header">
+      {/* Back Button */}
+      <div className="back-button-container">
         <button 
           type="button" 
           onClick={() => navigate(-1)} 
@@ -21,6 +21,10 @@ const Contact = () => {
           </svg>
           Back
         </button>
+      </div>
+
+      {/* Page Header Section */}
+      <header className="page-header">
         <h1>Contact Us</h1>
         <p>We'd love to hear from you. Reach out for queries about DoTz V12.0.</p>
       </header>

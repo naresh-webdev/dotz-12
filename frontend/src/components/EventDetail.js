@@ -10,9 +10,7 @@ import catchCrunchImg from '../images/event_posters/catch_crunch.jpeg';
 import designWarriorImg from '../images/event_posters/design_warrior.jpeg';
 import justAMinuteImg from '../images/event_posters/just_a_minute.jpeg';
 import rhythmRhymeImg from '../images/event_posters/rhythm_rhyme.jpeg';
-
-// Note: Missing images - using placeholders for now
-const visionXImg = '/images/placeholder.jpg';
+import visionXImg from '../images/event_posters/vision_x.jpeg';
 
 const allEvents = {
   tech1: {
@@ -125,59 +123,7 @@ const EventDetail = () => {
   const { id } = useParams();
   const event = allEvents[id];
 
-  // Function to handle adding event to calendar
-  const handleAddToCalendar = () => {
-    if (!event) return;
-    
-    // Parse the date and time
-    const eventDate = new Date(event.date);
-    const [startTime, endTime] = event.time.split(' - ');
-    
-    // Convert to proper date format for calendar
-    const startDateTime = new Date(eventDate);
-    const endDateTime = new Date(eventDate);
-    
-    // Parse start time
-    const [startHour, startMinute] = startTime.split(':');
-    const startPeriod = startTime.includes('PM') ? 'PM' : 'AM';
-    let startHour24 = parseInt(startHour);
-    if (startPeriod === 'PM' && startHour24 !== 12) startHour24 += 12;
-    if (startPeriod === 'AM' && startHour24 === 12) startHour24 = 0;
-    
-    startDateTime.setHours(startHour24, parseInt(startMinute.replace(/[^0-9]/g, '')), 0, 0);
-    
-    // Parse end time
-    const [endHour, endMinute] = endTime.split(':');
-    const endPeriod = endTime.includes('PM') ? 'PM' : 'AM';
-    let endHour24 = parseInt(endHour);
-    if (endPeriod === 'PM' && endHour24 !== 12) endHour24 += 12;
-    if (endPeriod === 'AM' && endHour24 === 12) endHour24 = 0;
-    
-    endDateTime.setHours(endHour24, parseInt(endMinute.replace(/[^0-9]/g, '')), 0, 0);
-    
-    // Format dates for calendar (YYYYMMDDTHHMMSSZ)
-    const formatDate = (date) => {
-      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    };
-    
-    const startDateFormatted = formatDate(startDateTime);
-    const endDateFormatted = formatDate(endDateTime);
-    
-    // Create calendar event details
-    const calendarEvent = {
-      title: event.title,
-      start: startDateFormatted,
-      end: endDateFormatted,
-      description: event.description.replace(/•/g, '-').replace(/\\n/g, ' '),
-      location: event.location
-    };
-    
-    // Generate Google Calendar URL
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calendarEvent.title)}&dates=${calendarEvent.start}/${calendarEvent.end}&details=${encodeURIComponent(calendarEvent.description)}&location=${encodeURIComponent(calendarEvent.location)}`;
-    
-    // Open Google Calendar in new tab
-    window.open(googleCalendarUrl, '_blank');
-  };
+
 
   if (!event) {
     return (
@@ -208,7 +154,7 @@ const EventDetail = () => {
             <div className="meta-item"><strong>Location</strong><span>{event.location}</span></div>
             <div className="meta-item"><strong>Fee</strong><span>{event.price}</span></div>
             <div className="meta-item"><strong>Coordinator</strong><span>{event.instructor}</span></div>
-            <div className="meta-item"><strong>Expected Participants</strong><span>{event.maxParticipants}</span></div>
+
           </div>
 
           <div className="event-description-detailed">
@@ -222,7 +168,6 @@ const EventDetail = () => {
 
           <div className="event-actions">
             <Link to="/register" className="btn btn-primary">Register Now</Link>
-            <button onClick={handleAddToCalendar} className="btn btn-outline">Add to Calendar</button>
           </div>
         </div>
       </div>
