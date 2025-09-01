@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Sponsors.css';
 
 const sponsors = [
@@ -14,8 +15,25 @@ const coSponsors = [
 ];
 
 const Sponsors = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="sponsors-page sponsors-theme professional">
+      {/* Back Button */}
+      <div className="back-button-container">
+        <button 
+          type="button" 
+          onClick={() => navigate(-1)} 
+          className="back-button"
+          aria-label="Go back"
+        >
+          <svg className="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back
+        </button>
+      </div>
+
       <section className="sponsors-hero">
         <div className="hero-content">
           <h1>Our Sponsors</h1>

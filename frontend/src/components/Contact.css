@@ -4,6 +4,7 @@
   min-height: 100vh;
   position: relative;
   padding: 0;
+  margin-bottom: 0;
 }
 
 /* Back Button Container */
@@ -88,8 +89,8 @@
   grid-template-columns: 1fr 1.25fr; 
   gap: 3rem; 
   max-width: 1200px; 
-  margin: 0 auto; 
-  padding: 4rem 2rem; 
+  margin: 0 auto 2rem; 
+  padding: 4rem 2rem 2rem; 
 }
 
 /* Enhanced Contact Panel */
@@ -372,8 +373,8 @@
 /* Enhanced Map Section */
 .map-section { 
   max-width: 1200px; 
-  margin: 2rem auto;
-  padding: 0 2rem 4rem; 
+  margin: 2rem auto 0;
+  padding: 0 2rem; 
 }
 
 .map-header {
@@ -439,7 +440,8 @@
   .contact-layout { 
     grid-template-columns: 1fr; 
     gap: 2rem;
-    padding: 3rem 1.5rem;
+    padding: 3rem 1.5rem 2rem;
+    margin: 0 auto 1rem;
   }
   
   .page-header {
@@ -462,7 +464,8 @@
   }
   
   .contact-layout {
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1rem;
+    margin: 0 auto 1rem;
   }
   
   .contact-item {
@@ -476,7 +479,7 @@
   }
   
   .map-section {
-    padding: 0 1rem 3rem;
+    padding: 0 1rem;
   }
 }
 
@@ -490,7 +493,8 @@
   }
   
   .contact-layout {
-    padding: 1.5rem 0.75rem;
+    padding: 1.5rem 0.75rem 1rem;
+    margin: 0 auto 1rem;
   }
   
   .contact-panel.enhanced,
