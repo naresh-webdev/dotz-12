@@ -44,7 +44,7 @@ const allEvents = {
     title: 'Algoverse X',
     image: algoverseXImg,
     category: 'Technical',
-    description: '• Dive into the universe of algorithms where complex problems meet innovative solutions\n• Requirements: 2-3 rows of PCs in the lab\n• Round 1: Code Quest - 10 pseudo code MCQs via Google Form (20 minutes)\n• Teams (2 members) or individuals can participate in Round 1\n• 5 simple logical algorithms + 5 hard algorithm and problem-solving questions\n• Round 2: HackerRank Showdown - Top performers from Round 1 qualify\n• 3 questions: 2 easy (25+25 points) + 1 medium (100 points) = 150 total points\n• 1.5 hours time frame with built-in leaderboard ranking\n• Winners selected based on HackerRank contest leaderboard performance',
+    description: '• Dive into the universe of algorithms where complex problems meet innovative solutions\n• Round 1: Code Quest - 10 pseudo code MCQs via Google Form (20 minutes)\n• Teams (2 members) or individuals can participate in Round 1\n• 5 simple logical algorithms + 5 hard algorithm and problem-solving questions\n• Round 2: HackerRank Showdown - Top performers from Round 1 qualify\n• 3 questions: 2 easy (25+25 points) + 1 medium (100 points) = 150 total points\n• 1.5 hours time frame with built-in leaderboard ranking\n• Winners selected based on HackerRank contest leaderboard performance',
     date: '15 Sep 2025',
     time: 'To be announced soon',
     location: 'To be announced soon',
@@ -174,5 +174,6 @@ const EventDetail = () => {
     </div>
   );
 };
+
 
 export default EventDetail;
