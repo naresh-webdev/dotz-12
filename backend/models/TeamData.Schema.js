@@ -35,6 +35,14 @@ const TeamDataSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    collegeName: {
+        type: String,
+        required: true
+    },
+    collegeId: {
+        type: String,
+        required: true
+    },
     leaderFoodPreference: {
         type: String,
         enum: ['Vegetarian', 'Non-Vegetarian'],
