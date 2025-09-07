@@ -14,6 +14,13 @@ import visionXImg from '../images/event_posters/vision_x.jpeg';
 
 const events = [
   {
+    id: 'tech4',
+    title: 'Vision X (Paper Presentation)',
+    description: 'Present your innovative research and technical insights to industry experts.',
+    image: visionXImg,
+    category: 'Technical'
+  },
+  {
     id: 'tech1',
     title: 'Brain Compiler',
     description: 'Challenge your analytical thinking with complex puzzles and reverse engineering challenges.',
@@ -32,13 +39,6 @@ const events = [
     title: 'Algoverse X',
     description: 'Enter the universe of algorithms and data structures in this competitive programming challenge.',
     image: algoverseXImg,
-    category: 'Technical'
-  },
-  {
-    id: 'tech4',
-    title: 'Vision X',
-    description: 'Present your innovative research and technical insights to industry experts.',
-    image: visionXImg,
     category: 'Technical'
   },
   {

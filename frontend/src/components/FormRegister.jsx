@@ -42,6 +42,8 @@ export default function FormRegister({ onSubmit }) {
     collegeId: "",
     members: [ { ...initialMember } ],
     leaderEvents: [],
+    paperPresentationTitle: "",
+    paperPresentationAbstract: ""
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -146,6 +148,19 @@ export default function FormRegister({ onSubmit }) {
     }
     // Prepare form data with correct participantCount
     const formData = { ...form, participantCount };
+    // If Paper Presentation is selected, validate title and abstract
+    if (form.leaderEvents.includes("Paper Presentation")) {
+      if (!form.paperPresentationTitle.trim() || !form.paperPresentationAbstract.trim()) {
+        alert("❌ Please provide both Paper Presentation Title and Abstract Description.");
+        setLoading(false);
+        return;
+      }
+      if (form.paperPresentationAbstract.length > 1000) {
+        alert("❌ Abstract Description must be 1000 characters or less.");
+        setLoading(false);
+        return;
+      }
+    }
     try {
       const response = await fetch("https://dotz-12-production.up.railway.app/api/register", {
         method: "POST",
@@ -342,6 +357,37 @@ export default function FormRegister({ onSubmit }) {
           <div className="selection-counter">
             Selected: {form.leaderEvents.length}/{EVENT_OPTIONS.length} events
           </div>
+          <br></br>
+          {/* Paper Presentation Fields */}
+          {form.leaderEvents.includes("Paper Presentation") && (
+            <div className="paper-presentation-fields">
+              <label className="form-label form-input-padding-bottom">
+                <span className="label-text">Paper Presentation Title  *</span>
+                <input
+                  name="paperPresentationTitle"
+                  value={form.paperPresentationTitle}
+                  onChange={handleChange}
+                  placeholder="Enter paper title"
+                  required
+                  className="form-input "
+                />
+              </label>
+              <label className="form-label">
+                <span className="label-text">Paper Presentation Abstract Description *</span>
+                <textarea
+                  name="paperPresentationAbstract"
+                  value={form.paperPresentationAbstract}
+                  onChange={handleChange}
+                  placeholder="Enter abstract description - Max 1000 characters"
+                  required
+                  className="form-input"
+                  rows={4}
+                  maxLength={1000}
+                />
+                <span className="char-count">{form.paperPresentationAbstract.length}/1000 characters</span>
+              </label>
+            </div>
+          )}
         </div>
 
         {/* Team Members Section */}
@@ -506,3 +552,6 @@ export default function FormRegister({ onSubmit }) {
     </div>
   );
 }
+
+
+ 

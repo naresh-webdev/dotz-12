@@ -9,6 +9,7 @@
 
 /* Ensure all form elements are scoped to registration-form */
 .registration-form .form-events-grid {
+  padding-top:5px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
@@ -17,6 +18,10 @@
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+}
+
+.form-input-padding-bottom {
+  margin-bottom: 1rem; /* Adjust as needed */
 }
 
 .registration-form .form-event-option {

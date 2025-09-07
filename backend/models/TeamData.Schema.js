@@ -102,7 +102,15 @@ const TeamDataSchema = new mongoose.Schema({
     paperPresentationTeamCount: {
         type: Number,
         required: false
-    }
+    },
+    paperPresentationTitle: {
+        type: String,
+        required: false
+    },
+    paperPresentationAbstract: {
+        type: String,
+        required: false
+    }   
 
 }, {
     collection: 'teamData'

@@ -57,7 +57,7 @@ const allEvents = {
     title: 'Vision X',
     image: visionXImg,
     category: 'Technical',
-    description: '• Paper Presentation event offering a platform for students to showcase innovative research and technical skills\n• Time Limit: 5 minutes per team + 2 minutes Q&A session\n• Presentation Format: 12 slides (must include Introduction & Conclusion)\n• Venues: Seminar Hall, Mini-Seminar Hall, IT Lab (12 teams per hall)\n• Setup: Projectors (Seminar Halls), Raptor & HDMI (IT Lab), Mic & Sound System\n• Papers will be shortlisted - only selected teams can present\n• Presentations in PPT/PDF format with pen drive backup required\n• Reporting time: 30 minutes before event starts\n• Judging: Content quality, originality, presentation skills, time management, Q&A\n• Event updates and slot details shared via email - stay active on mail',
+    description: `• Paper Presentation event offering a platform for students to showcase innovative research and technical skills\n• Time Limit: 5 minutes per team + 2 minutes Q&A session\n• Presentation Format: 12 slides (must include Introduction & Conclusion)\n• Venues: Seminar Hall, Mini-Seminar Hall, IT Lab\n• Setup: Projectors (Seminar Halls), Raptor & HDMI (IT Lab), Mic & Sound System\n• Papers will be shortlisted - only selected teams can present.\n• No need to submit final presentation before event\n• Presentations in <bold> PPT/PDF format with pen drive required</bold>\n• Reporting time: 30 minutes before event starts\n• Judging: Content quality, originality, presentation skills, time management, Q&A\n• Event updates and slot details shared via email - stay active on mail`,
     date: '15 Sep 2025',
     time: 'To be announced soon',
     location: 'To be announced soon',
@@ -161,7 +161,13 @@ const EventDetail = () => {
             <h3>About the Event</h3>
             <div>
               {event.description.split('\n').map((line, index) => (
-                <p key={index} style={{ margin: '0.5rem 0', lineHeight: '1.6' }}>{line}</p>
+                <p
+                  key={index}
+                  style={{ margin: '0.5rem 0', lineHeight: '1.6' }}
+                  dangerouslySetInnerHTML={{
+                    __html: line.replace(/<bold>(.*?)<\/bold>/g, '<strong>$1</strong>')
+                  }}
+                />
               ))}
             </div>
           </div>
