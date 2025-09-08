@@ -412,10 +412,10 @@ app.post('/api/payment/webhook', async (req, res) => {
       switch (orderStatus) {
         case 'PAID':
           teamData.paymentStatus = 'paid';
-          teamData.paymentId = paymentId || authId || 'PAYMENT_COMPLETED';
-          teamData.paymentMethod = paymentMethod;
-          teamData.paymentTime = paymentTime;
-          teamData.bankReference = bankReference;
+          teamData.paymentId = req.body.data.payment.cf_payment_id || 'PAYMENT_COMPLETED';
+          teamData.paymentMethod = req.body.data.payment.payment_group || 'UNKNOWN';
+          teamData.paymentTime = req.body.data.payment.payment_time || new Date().toISOString();
+          teamData.bankReference = req.body.data.payment.bank_reference || 'N/A';
           console.log(`Payment successful for order ${orderId}`);
           break;
           
