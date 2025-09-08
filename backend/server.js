@@ -434,7 +434,7 @@ app.post('/api/payment/webhook', async (req, res) => {
       success: true, 
       message: 'Webhook processed successfully',
       orderId: orderId,
-      status: orderStatus
+      status: (paymentStatus == 'SUCCESS') ? 'paid' : paymentStatus?.toLowerCase() || 'unknown'
     });
 
   } catch (error) {
