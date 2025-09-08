@@ -1,3 +1,4 @@
+
 // Importing required modules
 require("dotenv").config();
 const express = require("express");
@@ -522,13 +523,16 @@ app.post("/api/entry-permit", async (req, res) => {
 
 // ---------- Admin Login ----------
 app.post("/api/admin-login", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const admin = await AdminData.findOne({ email, password });
+    console.log("received in server : ", username, password);
+    const admin = await AdminData.findOne({ username, password });
+    console.log("data from db : ", admin);
+
     if (!admin) {
       return res
         .status(401)
-        .json({ valid: false, message: "Invalid email or password." });
+        .json({ valid: false, message: "Invalid username or password." });
     }
     return res.json({ valid: true, message: "Admin login successful." });
   } catch (err) {
@@ -536,6 +540,20 @@ app.post("/api/admin-login", async (req, res) => {
     return res.status(500).json({ valid: false, message: "Server error." });
   }
 });
+
+
+// ---------- Get All Teams (Admin) ----------
+// GET /api/admin/teams - Fetch all team records for admin panel
+app.get('/api/admin/teams', async (req, res) => {
+  try {
+    const teams = await TeamData.find({});
+    res.json({ success: true, teams });
+  } catch (error) {
+    console.error('Error fetching teams:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch teams', error: error.message });
+  }
+});
+
 
 // ---------- Start Server ----------
 app.listen(PORT, () => {

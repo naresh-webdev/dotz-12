@@ -16,6 +16,8 @@ import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RefundPolicy from './components/RefundPolicy';
 import TermsConditions from './components/TermsConditions';
+import AdminPannel from './components/AdminPannel';
+import QrScanner from './components/QrScanner';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -114,6 +116,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/admin-pannel" element={<AdminPannel />} />
+            <Route path="/qr-scanner" element={<QrScanner />} />
           </Routes>
         </main>
 

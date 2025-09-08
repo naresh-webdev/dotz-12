@@ -18,14 +18,14 @@ const EVENT_OPTIONS = [
   "Paper Presentation",
   "Algoverse X",
   "Brain Compiler",
-  "Design Warriors",
+  "Design Warrior",
   "Non Technical",
 ];
 
 const MEMBER_EVENT_OPTIONS = [
   "Algoverse X",
   "Brain Compiler",
-  "Design Warriors",
+  "Design Warrior",
   "Non Technical",
 ];
 
@@ -311,18 +311,18 @@ export default function FormRegister({ onSubmit }) {
                 name="collegeName" 
                 value={form.collegeName} 
                 onChange={handleChange} 
-                placeholder="Enter college name" 
+                placeholder="Enter college full name" 
                 required 
                 className="form-input" 
               />
             </label>
             <label className="form-label">
-              <span className="label-text">College ID *</span>
+              <span className="label-text">College Code *</span>
               <input 
                 name="collegeId" 
                 value={form.collegeId} 
                 onChange={handleChange} 
-                placeholder="Enter college ID" 
+                placeholder="Enter college code - eg '4224'" 
                 required 
                 className="form-input" 
               />
