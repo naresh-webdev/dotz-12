@@ -420,8 +420,8 @@ app.post('/api/payment/webhook', async (req, res) => {
           console.log(`Payment pending for order ${orderId}`);
           break;
         default:
-          console.log(`Unknown payment status for order ${orderId}: ${orderStatus}`);
-          teamData.paymentStatus = orderStatus?.toLowerCase() || 'unknown';
+          console.log(`Unknown payment status for order ${orderId}: ${paymentStatus}`);
+          teamData.paymentStatus = paymentStatus?.toLowerCase() || 'unknown';
       }
 
       await teamData.save();
