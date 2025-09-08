@@ -29,12 +29,12 @@ const PaymentSuccess = () => {
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (response.ok && data.success && data.paymentStatus === 'paid') {
         console.log("data.booking", data.booking);
         console.log("important", data);
         setBooking(data.booking);
       } else {
-        setError(data.message || 'Payment verification failed');
+        setError(data.message || 'Payment verification failed or invalid payment status');
       }
     } catch {
       setError('Failed to verify payment');
@@ -71,7 +71,7 @@ const PaymentSuccess = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-red-100 mb-2">Payment Error😞, Please contact <bold>9344735611</bold></h2>
+              <h2 className="text-2xl font-semibold text-red-100 mb-2">Payment Error😞, Please contact <bold>9344735611</bold> for immediate assistance.</h2>
               <p className="text-red-50 mb-6">{error}</p>
               <button
                 onClick={() => window.location.href = '/'}
