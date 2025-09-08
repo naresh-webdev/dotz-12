@@ -378,9 +378,9 @@ app.post('/api/payment/webhook', async (req, res) => {
   try {
     console.log('Webhook received:', JSON.stringify(req.body, null, 2));
 
-    // Extract orderId and orderStatus from nested object
+    // Extract orderId and paymentStatus from nested object
     const orderId = req.body.data?.order?.order_id;
-    const orderStatus = req.body.data?.order?.order_status;
+    const paymentStatus = req.body.data?.payment.payment_status;
     const paymentData = req.body.data?.payment || {};
 
     if (!orderId) {
@@ -394,8 +394,8 @@ app.post('/api/payment/webhook', async (req, res) => {
       console.log(`Updating team ${orderId} from status: ${teamData.paymentStatus} to: ${orderStatus}`);
 
       // Handle different payment statuses
-      switch (orderStatus) {
-        case 'PAID':
+      switch (paymentStatus) {
+        case 'SUCCESS':
           teamData.paymentStatus = 'paid';
           teamData.paymentId = paymentData.cf_payment_id || 'PAYMENT_COMPLETED';
           teamData.paymentMethod = paymentData.payment_group || 'UNKNOWN';
@@ -408,10 +408,14 @@ app.post('/api/payment/webhook', async (req, res) => {
           console.log(`Payment expired for order ${orderId}`);
           break;
         case 'FAILED':
+        case 'CANCELLED':
+        case 'DECLINED':
+        case 'USER_DROPPED':
           teamData.paymentStatus = 'failed';
           console.log(`Payment failed for order ${orderId}: ${paymentData.payment_message}`);
           break;
         case 'PENDING':
+        case 'AUTHORIZED':
           teamData.paymentStatus = 'pending';
           console.log(`Payment pending for order ${orderId}`);
           break;
