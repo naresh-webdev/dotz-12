@@ -284,10 +284,6 @@ app.post('/api/payment/verify', async (req, res) => {
       switch (orderStatus) {
         case 'PAID':
           teamData.paymentStatus = 'paid';
-          teamData.paymentId = cashfreeResponse.data.cf_order_id || 'PAYMENT_COMPLETED';
-          teamData.paymentMethod = paymentDetails.payment_method;
-          teamData.paymentTime = paymentDetails.payment_time;
-          teamData.bankReference = paymentDetails.bank_reference;
           console.log(`Payment verified as successful for order ${orderId}`);
           
           await sendConfirmationMail(
