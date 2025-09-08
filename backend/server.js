@@ -378,23 +378,12 @@ app.post('/api/payment/webhook', async (req, res) => {
   try {
     console.log('Webhook received:', JSON.stringify(req.body, null, 2));
 
-    const { 
-      orderId, 
-      orderAmount, 
-      orderCurrency, 
-      orderStatus, 
-      paymentId,
-      paymentAmount,
-      paymentCurrency,
-      paymentStatus,
-      paymentMessage,
-      paymentTime,
-      bankReference,
-      authId,
-      paymentMethod
-    } = req.body;
+    // Extract orderId and orderStatus from nested object
+    const orderId = req.body.data?.order?.order_id;
+    const orderStatus = req.body.data?.order?.order_status;
+    const paymentData = req.body.data?.payment || {};
 
-    if (!req.body.data.order.order_id) {
+    if (!orderId) {
       console.error('Webhook missing orderId');
       return res.status(400).json({ message: 'Order ID is required' });
     }
@@ -408,43 +397,35 @@ app.post('/api/payment/webhook', async (req, res) => {
       switch (orderStatus) {
         case 'PAID':
           teamData.paymentStatus = 'paid';
-          teamData.paymentId = req.body.data.payment.cf_payment_id || 'PAYMENT_COMPLETED';
-          teamData.paymentMethod = req.body.data.payment.payment_group || 'UNKNOWN';
-          teamData.paymentTime = req.body.data.payment.payment_time || new Date().toISOString();
-          teamData.bankReference = req.body.data.payment.bank_reference || 'N/A';
+          teamData.paymentId = paymentData.cf_payment_id || 'PAYMENT_COMPLETED';
+          teamData.paymentMethod = paymentData.payment_group || 'UNKNOWN';
+          teamData.paymentTime = paymentData.payment_time || new Date().toISOString();
+          teamData.bankReference = paymentData.bank_reference || 'N/A';
           console.log(`Payment successful for order ${orderId}`);
           break;
-          
         case 'EXPIRED':
           teamData.paymentStatus = 'cancelled';
           console.log(`Payment expired for order ${orderId}`);
           break;
-          
         case 'FAILED':
           teamData.paymentStatus = 'failed';
-          // teamData.paymentMessage = paymentMessage;
-          console.log(`Payment failed for order ${orderId}: ${paymentMessage}`);
+          console.log(`Payment failed for order ${orderId}: ${paymentData.payment_message}`);
           break;
-          
         case 'PENDING':
           teamData.paymentStatus = 'pending';
           console.log(`Payment pending for order ${orderId}`);
           break;
-          
         default:
           console.log(`Unknown payment status for order ${orderId}: ${orderStatus}`);
-          teamData.paymentStatus = orderStatus.toLowerCase();
+          teamData.paymentStatus = orderStatus?.toLowerCase() || 'unknown';
       }
 
       await teamData.save();
       console.log(`Team ${orderId} updated successfully`);
-
     } else {
       console.error(`Team not found for orderId: ${orderId}`);
     }
       
-    
-
     res.json({ 
       success: true, 
       message: 'Webhook processed successfully',
