@@ -30,6 +30,8 @@ const PaymentSuccess = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
+        console.log("data.booking", data.booking);
+        console.log("important", data);
         setBooking(data.booking);
       } else {
         setError(data.message || 'Payment verification failed');
