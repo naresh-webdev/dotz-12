@@ -22,7 +22,7 @@ export default function AdminPannel() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/admin-login', {
+      const res = await fetch('https://https://dotz-12-production.up.railway.app0/api/admin-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: form.username, password: form.password })
@@ -42,7 +42,7 @@ export default function AdminPannel() {
   useEffect(() => {
     if (authenticated) {
       setTableLoading(true);
-      fetch('http://localhost:5000/api/admin/teams')
+      fetch('https://https://dotz-12-production.up.railway.app0/api/admin/teams')
         .then(res => res.json())
         .then(data => {
           setTeams(data.teams || []);

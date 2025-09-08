@@ -91,7 +91,7 @@ const Footer = () => {
               <p>&copy; 2024 DoTz V12.0. All rights reserved.</p>
             </div>
             <div className="footer-bottom-links">
-              <a href="/admin-panel">Admin</a>
+              <a href="/admin-pannel">Admin</a>
               <a href="/privacy-policy">Privacy Policy</a>
               <a href="/refund-policy">Refund Policy</a>
               <a href="/terms-conditions">Terms & Conditions</a>
