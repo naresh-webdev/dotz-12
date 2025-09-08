@@ -391,7 +391,7 @@ app.post('/api/payment/webhook', async (req, res) => {
     // Update booking status in database
     const teamData = await TeamData.findOne({ orderId });
     if (teamData) {
-      console.log(`Updating team ${orderId} from status: ${teamData.paymentStatus} to: ${orderStatus}`);
+      console.log(`Updating team ${orderId} from status: ${teamData.paymentStatus} to: ${paymentStatus == 'SUCCESS' ? 'paid' : paymentStatus}`);
 
       // Handle different payment statuses
       switch (paymentStatus) {
