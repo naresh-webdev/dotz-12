@@ -261,7 +261,7 @@ app.post("/api/register", async (req, res) => {
 app.post('/api/payment/verify', async (req, res) => {
   try {
     const { orderId } = req.body;
-
+    console.log("inside api/payment/verify", req.body);
     if (!orderId) {
       return res.status(400).json({ message: 'Order ID is required' });
     }
@@ -284,7 +284,7 @@ app.post('/api/payment/verify', async (req, res) => {
       switch (orderStatus) {
         case 'PAID':
           teamData.paymentStatus = 'paid';
-          teamData.paymentId = paymentDetails.payment_id || paymentDetails.auth_id || 'PAYMENT_COMPLETED';
+          teamData.paymentId = cashfreeResponse.data.cf_order_id || 'PAYMENT_COMPLETED';
           teamData.paymentMethod = paymentDetails.payment_method;
           teamData.paymentTime = paymentDetails.payment_time;
           teamData.bankReference = paymentDetails.bank_reference;

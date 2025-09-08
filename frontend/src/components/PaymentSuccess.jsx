@@ -29,7 +29,7 @@ const PaymentSuccess = () => {
 
       const data = await response.json();
 
-      if (response.ok && data.success && data.paymentStatus === 'paid') {
+      if (response.ok && data.success && (data.paymentStatus === 'paid' || data.orderStatus === 'PAID')) {
         console.log("data.booking", data.booking);
         console.log("important", data);
         setBooking(data.booking);
