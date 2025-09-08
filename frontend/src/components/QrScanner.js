@@ -28,6 +28,7 @@ return (
         style={previewStyle}
         onError={handleError}
         onScan={handleScan}
+        facingMode="environment" 
       />
 {error && <p style={{ color: 'red' }}>{error}</p>}
 <p style={{ color: 'green', fontWeight: 'bold' }}>{result}</p>
