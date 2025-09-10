@@ -117,7 +117,7 @@ function App() {
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsConditions />} />
             <Route path="/admin-pannel" element={<AdminPannel />} />
-            <Route path="/qr-scanner" element={<QrScanner />} />
+            {/* <Route path="/qr-scanner" element={<QrScanner />} /> */}
           </Routes>
         </main>
 

@@ -6,6 +6,7 @@ export default function QrScannerComponent() {
   const [error, setError] = useState('');
   const [devices, setDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
+  const [scanLock, setScanLock] = useState(false);
 
   useEffect(() => {
     async function getVideoDevices() {
@@ -23,9 +24,27 @@ export default function QrScannerComponent() {
     getVideoDevices();
   }, []);
 
-  const handleScan = (data) => {
-    if (data) {
-      setResult(data.text || data);
+  const handleScan = async (data) => {
+    if (data && !scanLock) {
+      setScanLock(true);
+      const teamKey = data.text || data;
+      setResult(teamKey);
+      try {
+        const response = await fetch('https://dotz-12-production.up.railway.app/api/entry-permit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ teamKey }),
+        });
+        const resData = await response.json();
+        if (resData.valid) {
+          alert(resData.message || 'Entry registered successfully!');
+        } else {
+          alert(resData.message || 'Error: Could not register entry.');
+        }
+      } catch (err) {
+        alert('Server error: Could not update entry.');
+      }
+      setTimeout(() => setScanLock(false), 2000); // unlock after 2 seconds
     }
   };
 

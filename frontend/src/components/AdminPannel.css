@@ -1,0 +1,170 @@
+/* Admin Panel Theme - matches other pages */
+.admin-login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 32px;
+  border-radius: 12px;
+  background: #0b1229;
+  background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+  color: #fff;
+}
+.admin-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e5e7eb;
+  text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: linear-gradient(145deg, #0b1229 0%, #1e293b 100%);
+  color: #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.admin-table th {
+  padding: 1rem;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  font-weight: 700;
+  border-bottom: 2px solid #1f2a54;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #1f2a54;
+  text-align: left;
+  background: transparent;
+  color: #e5e7eb;
+}
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+.admin-input{
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+.admin-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15), 0 4px 12px rgba(59,130,246,0.1);
+}
+.admin-error {
+  color: #ef4444;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.admin-btn {
+  padding: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.2), 0 2px 8px rgba(0,0,0,0.2);
+}
+.admin-btn:disabled {
+  background: #6b7280 !important;
+  color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  filter: grayscale(0.5) brightness(0.95);
+  box-shadow: none;
+  opacity: 0.8;
+}
+/* Cleaned up duplicate and misplaced blocks, fixed syntax */
+/* ...existing code... */
+.admin-panel-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 2rem;
+  background: linear-gradient(145deg, #0b1229 0%, #1e293b 100%);
+  border-radius: 16px;
+  color: #e5e7eb;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+.admin-toggle-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin-btn-toggle {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: 2px solid #1f2a54;
+  background: linear-gradient(145deg, #0b1229 0%, #1e293b 100%);
+  color: #e5e7eb;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.admin-btn-toggle.active {
+  background: linear-gradient(145deg, #3b82f6 0%, #2563eb 100%);
+  border: 2px solid #3b82f6;
+  color: #fff;
+}
+.admin-filters {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.admin-form {
+        display: flex
+;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+.admin-form-group {
+        display: flex
+;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.admin-select {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid #1f2a54;
+  background: linear-gradient(145deg, #0b1229 0%, #1e293b 100%);
+  color: #e5e7eb;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+.admin-table-wrapper {
+  overflow-x: auto;
+  background: linear-gradient(145deg, #0b1229 0%, #1e293b 100%);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.admin-table tr {
+  transition: background 0.2s;
+}
+.admin-table tr:hover td {
+  background: rgba(59,130,246,0.08);
+}
+.admin-no-records {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+}
+.admin-loading {
+  text-align: center;
+  margin-top: 40px;
+  color: #3b82f6;
+  font-size: 1.2rem;
+}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './AdminPannel.css';
+import QrScannerComponent from './QrScanner';
 
 export default function AdminPannel() {
   const [form, setForm] = useState({ username: '', password: '' });
@@ -51,6 +53,20 @@ export default function AdminPannel() {
         .catch(() => setTableLoading(false));
     }
   }, [authenticated]);
+
+  // Add refresh handler
+  const handleRefresh = () => {
+    if (authenticated) {
+      setTableLoading(true);
+      fetch('https://dotz-12-production.up.railway.app/api/admin/teams')
+        .then(res => res.json())
+        .then(data => {
+          setTeams(data.teams || []);
+          setTableLoading(false);
+        })
+        .catch(() => setTableLoading(false));
+    }
+  };
 
   // Team Table Filtering
   const filteredTeams = teams.filter(team => {
@@ -107,33 +123,33 @@ export default function AdminPannel() {
 
   if (!authenticated) {
     return (
-      <div className="admin-login-container" style={{ maxWidth: 400, margin: '60px auto', padding: 32, borderRadius: 8, boxShadow: '0 2px 8px #000', background: '#000' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Admin Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', marginBottom: 8 }}>Username</label>
+      <div className="admin-login-container">
+        <h2 className="admin-title">Admin Login</h2>
+        <form onSubmit={handleSubmit} className="admin-form">
+          <div className="admin-form-group">
+            <label>Username</label>
             <input
               type="text"
               name="username"
               value={form.username}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+              className="admin-input"
             />
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', marginBottom: 8 }}>Password</label>
+          <div className="admin-form-group">
+            <label>Password</label>
             <input
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+              className="admin-input"
             />
           </div>
-          {error && <div style={{ color: 'red', marginBottom: 16 }}>{error}</div>}
-          <button type="submit" disabled={loading} style={{ width: '100%', padding: 10, borderRadius: 4, background: '#4f46e5', color: '#000', border: 'none', fontWeight: 'bold' }}>
+          {error && <div className="admin-error">{error}</div>}
+          <button type="submit" disabled={loading} className="admin-btn">
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
@@ -142,28 +158,41 @@ export default function AdminPannel() {
   }
 
   return (
-    <div style={{ maxWidth: 1200, margin: '40px auto', padding: 24 }}>
-      <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Admin Panel</h2>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+    <div className="admin-panel-container">
+      <h2 className="admin-title">Admin Panel</h2>
+      <div className="admin-toggle-btns">
         <button
           onClick={() => setView('team')}
-          style={{ padding: '8px 24px', marginRight: 12, borderRadius: 4, border: view === 'team' ? '2px solid #4f46e5' : '1px solid #ccc', background: view === 'team' ? '#eef2ff' : '#000', fontWeight: 'bold', cursor: 'pointer' }}
+          className={`admin-btn-toggle${view === 'team' ? ' active' : ''}`}
         >
           Team Table
         </button>
         <button
           onClick={() => setView('member')}
-          style={{ padding: '8px 24px', borderRadius: 4, border: view === 'member' ? '2px solid #4f46e5' : '1px solid #ccc', background: view === 'member' ? '#eef2ff' : '#000', fontWeight: 'bold', cursor: 'pointer' }}
+          className={`admin-btn-toggle${view === 'member' ? ' active' : ''}`}
         >
           Member Table
         </button>
+        <button
+          onClick={() => setView('qr-reader')}
+          className={`admin-btn-toggle${view === 'qr-reader' ? ' active' : ''}`}
+        >
+          Qr Scanner
+        </button>
+        <button
+          onClick={handleRefresh}
+          className="admin-btn-toggle"
+          style={{ marginLeft: 12 }}
+        >
+          Refresh Data
+        </button>
       </div>
-      {view === 'team' ? (
+      {view == 'team' && (
         <div>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
-            <div>
+          <div className="admin-filters">
+            {/* <div>
               <label>Payment Status:</label>
-              <select value={filterPayment} onChange={e => setFilterPayment(e.target.value)} style={{ marginLeft: 8, padding: 4 }}>
+              <select value={filterPayment} onChange={e => setFilterPayment(e.target.value)} className="admin-select">
                 <option value="">All</option>
                 <option value="paid">Paid</option>
                 <option value="pending">Pending</option>
@@ -171,47 +200,47 @@ export default function AdminPannel() {
                 <option value="cancelled">Cancelled</option>
                 <option value="UNPAID">Unpaid</option>
               </select>
-            </div>
+            </div> */}
             <div>
               <label>College ID:</label>
-              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." style={{ marginLeft: 8, padding: 4 }} />
+              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." className="admin-input" />
             </div>
           </div>
           {tableLoading ? (
-            <div style={{ textAlign: 'center', marginTop: 40 }}>Loading records...</div>
+            <div className="admin-loading">Loading records...</div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: '#000' }}>
+            <div className="admin-table-wrapper">
+              <table className="admin-table">
                 <thead>
-                  <tr style={{ background: '#f3f4f6' }}>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Team #</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Leader Name</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Mobile Number</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Email</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>College Name</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>College ID</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Participants</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Has Visited</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Payment Status</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Bank Ref</th>
+                  <tr>
+                    <th>Team #</th>
+                    <th>Leader Name</th>
+                    <th>Mobile Number</th>
+                    <th>Email</th>
+                    <th>College Name</th>
+                    <th>College ID</th>
+                    <th>Participants</th>
+                    <th>Has Visited</th>
+                    <th>Payment Status</th>
+                    <th>Bank Ref</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTeams.length === 0 ? (
-                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: 24 }}>No records found.</td></tr>
+                    <tr><td colSpan={10} className="admin-no-records">No records found.</td></tr>
                   ) : (
                     filteredTeams.map(team => (
                       <tr key={team._id}>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.teamNumber}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.leaderName}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.leaderPhoneNumber}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.leaderEmail}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.collegeName}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.collegeId}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.participantCount}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.hasVisited ? 'Yes' : 'No'}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.paymentStatus}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{team.bankReference}</td>
+                        <td>{team.teamNumber}</td>
+                        <td>{team.leaderName}</td>
+                        <td>{team.leaderPhoneNumber}</td>
+                        <td>{team.leaderEmail}</td>
+                        <td>{team.collegeName}</td>
+                        <td>{team.collegeId}</td>
+                        <td>{team.participantCount}</td>
+                        <td>{team.hasVisited ? 'Yes' : 'No'}</td>
+                        <td>{team.paymentStatus}</td>
+                        <td>{team.bankReference}</td>
                       </tr>
                     ))
                   )}
@@ -220,12 +249,12 @@ export default function AdminPannel() {
             </div>
           )}
         </div>
-      ) : (
+      )} {view === 'member' && (
         <div>
-          <div style={{ display: 'flex', gap: 16, marginBottom: 24 }}>
+          <div className="admin-filters">
             <div>
               <label>Filter by Event:</label>
-              <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)} style={{ marginLeft: 8, padding: 4 }}>
+              <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)} className="admin-select">
                 <option value="">All</option>
                 <option value="Paper Presentation">Paper Presentation</option>
                 <option value="Algoverse X">Algoverse X</option>
@@ -236,53 +265,62 @@ export default function AdminPannel() {
             </div>
             <div>
               <label>College ID:</label>
-              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." style={{ marginLeft: 8, padding: 4 }} />
+              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." className="admin-input" />
             </div>
           </div>
           {tableLoading ? (
-            <div style={{ textAlign: 'center', marginTop: 40 }}>Loading records...</div>
+            <div className="admin-loading">Loading records...</div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', background: '#000' }}>
+            <div className="admin-table-wrapper">
+              <table className="admin-table">
                 <thead>
-                  <tr style={{ background: '#f3f4f6' }}>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Team #</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Role</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Name</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Mobile Number</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Email</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>College Name</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>College ID</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Events</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Has Visited</th>
-                    <th style={{ padding: 8, border: '1px solid #000' }}>Payment Status</th>
+                  <tr>
+                    <th>Team #</th>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Mobile Number</th>
+                    <th>Email</th>
+                    <th>College Name</th>
+                    <th>College ID</th>
+                    <th>Events</th>
+                    <th>Has Visited</th>
+                    <th>Payment Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredMembers.length === 0 ? (
-                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: 24 }}>No records found.</td></tr>
+                    <tr><td colSpan={10} className="admin-no-records">No records found.</td></tr>
                   ) : (
                     filteredMembers.map((person, idx) => (
                       <tr key={person.teamNumber + '-' + person.role + '-' + idx}>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.teamNumber}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.role}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.name}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.phone}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.email}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.collegeName}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.collegeId}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.events && person.events.join(', ')}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.hasVisited ? 'Yes' : 'No'}</td>
-                        <td style={{ padding: 8, border: '1px solid #000' }}>{person.paymentStatus}</td>
+                        <td>{person.teamNumber}</td>
+                        <td>{person.role}</td>
+                        <td>{person.name}</td>
+                        <td>{person.phone}</td>
+                        <td>{person.email}</td>
+                        <td>{person.collegeName}</td>
+                        <td>{person.collegeId}</td>
+                        <td>{person.events && person.events.join(', ')}</td>
+                        <td>{person.hasVisited ? 'Yes' : 'No'}</td>
+                        <td>{person.paymentStatus}</td>
                       </tr>
                     ))
                   )}
                 </tbody>
               </table>
+             
             </div>
           )}
+          
         </div>
-      )}
+      )} {
+        view === 'qr-reader' && (
+          <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+            <QrScannerComponent />
+          </div>
+        )
+      }
+      
     </div>
   );
 }

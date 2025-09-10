@@ -554,6 +554,26 @@ app.get('/api/admin/teams', async (req, res) => {
   }
 });
 
+app.get("/api/admin/modify-visited", async (req, res) => {
+  try {
+    const data = req.body;
+    const {teamKey} = data;
+    console.log("inside api/admin/modify-visited", teamKey);
+    if (!teamKey) {
+      return res.status(400).json({ message: 'Team Key is required' });
+    }
+    const team = await TeamData.findOne({teamKey});
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    team.hasVisited = !team.hasVisited;
+    await team.save();
+    res.json({ success: true, message: 'Visited status updated successfully', hasVisited: team.hasVisited });
+  } catch (error) {
+    console.error('Error fetching visited count:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch visited count', error: error.message });
+  }
+});
 
 // ---------- Start Server ----------
 app.listen(PORT, () => {
