@@ -96,7 +96,14 @@ const allEvents = {
     title: 'Booyah Carnival',
     image: booyahCarnivalImg,
     category: 'Non-Technical',
-    description: 'Join the ultimate fun carnival with games, challenges, and entertainment galore. Create attractive presentations around surprise themes and showcase your creativity.',
+    description: `Round: Single Round (If more entries, two rounds may be conducted)
+
+Round 1: Battle Royale - Bermuda
+50 players will be landed in a map, where they have to pick up loot, fight ⚔, and survive till the last. The winner 🏆 is the last survivor. MVP of the match will also receive a special reward.
+
+Round 2 (Optional, if more player entries detected):-
+Two battle royale matches will be conducted at the same time, resulting in two winners from each match. The two winning teams will then play a clash squad match. The winner of this match will be declared 👑.
+`,
     date: '15 Sep 2025',
     time: 'To be announced soon',
     location: 'To be announced soon',
