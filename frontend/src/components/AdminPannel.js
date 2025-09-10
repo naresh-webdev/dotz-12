@@ -135,6 +135,7 @@ export default function AdminPannel() {
               onChange={handleChange}
               required
               className="admin-input"
+              placeholder="Enter your username"
             />
           </div>
           <div className="admin-form-group">
@@ -146,6 +147,7 @@ export default function AdminPannel() {
               onChange={handleChange}
               required
               className="admin-input"
+              placeholder="Enter your password"
             />
           </div>
           {error && <div className="admin-error">{error}</div>}
@@ -164,25 +166,28 @@ export default function AdminPannel() {
         <button
           onClick={() => setView('team')}
           className={`admin-btn-toggle${view === 'team' ? ' active' : ''}`}
+          aria-label="View team table"
         >
           Team Table
         </button>
         <button
           onClick={() => setView('member')}
           className={`admin-btn-toggle${view === 'member' ? ' active' : ''}`}
+          aria-label="View member table"
         >
           Member Table
         </button>
         <button
           onClick={() => setView('qr-reader')}
           className={`admin-btn-toggle${view === 'qr-reader' ? ' active' : ''}`}
+          aria-label="Open QR scanner"
         >
-          Qr Scanner
+          QR Scanner
         </button>
         <button
           onClick={handleRefresh}
           className="admin-btn-toggle"
-          style={{ marginLeft: 12 }}
+          aria-label="Refresh data"
         >
           Refresh Data
         </button>
@@ -190,20 +195,15 @@ export default function AdminPannel() {
       {view == 'team' && (
         <div>
           <div className="admin-filters">
-            {/* <div>
-              <label>Payment Status:</label>
-              <select value={filterPayment} onChange={e => setFilterPayment(e.target.value)} className="admin-select">
-                <option value="">All</option>
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="UNPAID">Unpaid</option>
-              </select>
-            </div> */}
             <div>
               <label>College ID:</label>
-              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." className="admin-input" />
+              <input 
+                type="text" 
+                value={filterCollegeId} 
+                onChange={e => setFilterCollegeId(e.target.value)} 
+                placeholder="Search college ID..." 
+                className="admin-input" 
+              />
             </div>
           </div>
           {tableLoading ? (
@@ -254,8 +254,12 @@ export default function AdminPannel() {
           <div className="admin-filters">
             <div>
               <label>Filter by Event:</label>
-              <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)} className="admin-select">
-                <option value="">All</option>
+              <select 
+                value={filterEvent} 
+                onChange={e => setFilterEvent(e.target.value)} 
+                className="admin-select"
+              >
+                <option value="">All Events</option>
                 <option value="Paper Presentation">Paper Presentation</option>
                 <option value="Algoverse X">Algoverse X</option>
                 <option value="Brain Compiler">Brain Compiler</option>
@@ -265,7 +269,13 @@ export default function AdminPannel() {
             </div>
             <div>
               <label>College ID:</label>
-              <input type="text" value={filterCollegeId} onChange={e => setFilterCollegeId(e.target.value)} placeholder="Search college ID..." className="admin-input" />
+              <input 
+                type="text" 
+                value={filterCollegeId} 
+                onChange={e => setFilterCollegeId(e.target.value)} 
+                placeholder="Search college ID..." 
+                className="admin-input" 
+              />
             </div>
           </div>
           {tableLoading ? (
@@ -308,10 +318,8 @@ export default function AdminPannel() {
                   )}
                 </tbody>
               </table>
-             
             </div>
           )}
-          
         </div>
       )} {
         view === 'qr-reader' && (
@@ -320,7 +328,6 @@ export default function AdminPannel() {
           </div>
         )
       }
-      
     </div>
   );
 }
