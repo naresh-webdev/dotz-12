@@ -277,6 +277,12 @@
   background: rgba(59,130,246,0.1);
 }
 
+.admin-summary-row td {
+  background: linear-gradient(90deg, rgba(59,130,246,0.3) 0%, rgba(29,78,216,0.3) 100%);
+  font-weight: bold;
+  border-top: 2px solid #3b82f6;
+}
+
 .admin-no-records {
   text-align: center;
   padding: 2rem;
