@@ -21,10 +21,8 @@ const TeamDataSchema = new mongoose.Schema({
         required: true
     },
     leaderPhoneNumber: {
-        type: Number,
-        required: true,
-        min: 1000000000,
-        max: 9999999999
+        type: String,
+        required: true
     },
     leaderEmail: {
         type: String,
@@ -32,7 +30,7 @@ const TeamDataSchema = new mongoose.Schema({
         match: /.+\@.+\..+/
     },
     leaderRegisterNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     collegeName: {
@@ -62,8 +60,8 @@ const TeamDataSchema = new mongoose.Schema({
             {
                 name: { type: String, required: true },
                 email: { type: String, required: true, match: /.+\@.+\..+/ },
-                phone: { type: Number, required: true, min: 1000000000, max: 9999999999 },
-                registerNumber: { type: Number, required: true },
+                phone: { type: String, required: true },
+                registerNumber: { type: String, required: true },
                 foodPreference: { type: String, enum: ['Vegetarian', 'Non-Vegetarian'], required: true },
                 gender: { type: String, enum: ['Male', 'Female'], required: true },
 
