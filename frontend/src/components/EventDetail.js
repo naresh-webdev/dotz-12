@@ -121,7 +121,7 @@ Two battle royale matches will be conducted at the same time, resulting in two w
     time: 'To be announced soon',
     location: 'To be announced soon',
     price: '₹200',
-    instructor: 'UCET IT Team',
+    instructor: 'S. Dhanalakshmi',
     maxParticipants: 200
   }
 };

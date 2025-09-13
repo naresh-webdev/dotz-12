@@ -42,7 +42,7 @@ const About = () => {
               <div className="coordinator-info">
                 <h4 className="coordinator-name">Dr. R. Shyamala</h4>
                 <p className="coordinator-position">AP/IT</p>
-                <a href="tel:+919791194793" className="coordinator-phone">+91 9791194793</a>
+                <a href="tel:+919791194793" className="coordinator-phone">+91 97911 94793</a>
               </div>
             </div>
           </div>
@@ -53,16 +53,87 @@ const About = () => {
             <div className="coordinators-grid">
               <div className="coordinator-card">
                 <div className="coordinator-info">
-                  <h4 className="coordinator-name">Mr. D. Ram Mrithyun Jay</h4>
+                  <h4 className="coordinator-name">D. Ram Mrithyun Jay</h4>
                   <p className="coordinator-position">Secretary</p>
-                  <a href="tel:+918072375560" className="coordinator-phone">+91 8072 375 560</a>
+                  <a href="tel:+918072375560" className="coordinator-phone">+91 80723 75560</a>
                 </div>
               </div>
               <div className="coordinator-card">
                 <div className="coordinator-info">
-                  <h4 className="coordinator-name">Ms. S. Rakshaya</h4>
+                  <h4 className="coordinator-name">S. Rakshaya</h4>
                   <p className="coordinator-position">Treasurer</p>
-                  <a href="tel:+918015181982" className="coordinator-phone">+91 8015181982</a>
+                  <a href="tel:+918015181982" className="coordinator-phone">+91 80151 81982</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Event Coordinators */}
+          <div className="coordinator-category">
+            <h3 className="category-title">Event Coordinators</h3>
+            
+            {/* Technical Events */}
+            <h4 className="category-subtitle">Technical Events</h4>
+            <div className="coordinators-grid">
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">T. Akalya</h4>
+                  <p className="coordinator-position">Brain Compiler</p>
+                  <a href="tel:+916374772083" className="coordinator-phone">+91 63747 72083</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">D. Monish</h4>
+                  <p className="coordinator-position">Design Warrior</p>
+                  <a href="tel:+919500377213" className="coordinator-phone">+91 95003 77213</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">M. Varun Karthikeyan</h4>
+                  <p className="coordinator-position">Algoverse X</p>
+                  <a href="tel:+919994945451" className="coordinator-phone">+91 99949 45451</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">G. Vetriselvan</h4>
+                  <p className="coordinator-position">Vision X</p>
+                  <a href="tel:+918438932796" className="coordinator-phone">+91 84389 32796</a>
+                </div>
+              </div>
+            </div>
+            
+            {/* Non-Technical Events */}
+            <h4 className="category-subtitle">Non-Technical Events</h4>
+            <div className="coordinators-grid">
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">P. Baskar</h4>
+                  <p className="coordinator-position">Just a Minute</p>
+                  <a href="tel:+918220802116" className="coordinator-phone">+91 90476 48112</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">G. Ramya</h4>
+                  <p className="coordinator-position">Rhythm and Rhyme</p>
+                  <a href="tel:+919600334898" className="coordinator-phone">+91 96003 34898</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">K. Yuvaraj</h4>
+                  <p className="coordinator-position">Booyah Carnival</p>
+                  <a href="tel:+919047569880" className="coordinator-phone">+91 90475 69880</a>
+                </div>
+              </div>
+              <div className="coordinator-card">
+                <div className="coordinator-info">
+                  <h4 className="coordinator-name">S. Dhanalakshmi</h4>
+                  <p className="coordinator-position">Catch and Crunch</p>
+                  <a href="tel:+919585382291" className="coordinator-phone">+91 95853 82291</a>
                 </div>
               </div>
             </div>
