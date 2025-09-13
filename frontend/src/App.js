@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import './App.css';
 
 // Import Components
@@ -18,6 +18,17 @@ import RefundPolicy from './components/RefundPolicy';
 import TermsConditions from './components/TermsConditions';
 import AdminPannel from './components/AdminPannel';
 import QrScanner from './components/QrScanner';
+
+// ScrollToTop component to fix scroll position issues
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -99,6 +110,9 @@ function App() {
             </div>
           </div>
         </nav>
+
+        {/* ScrollToTop component */}
+        <ScrollToTop />
 
         {/* Main Content Area */}
         <main className="main-content">
