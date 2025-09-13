@@ -18,7 +18,7 @@ const allEvents = {
     title: 'Brain Compiler',
     image: brainCompilerImg,
     category: 'Technical',
-    description: '• Test your logical thinking and programming skills in this exciting brain challenge\n• Participants can join individually or as a team of 2\n• Round 1: Puzzle & Aptitude Quest - Solve 10 basic puzzles and aptitude questions\n• Mix of reasoning, number series, and simple logic problems\n• Mode: Google Form / Paper-based, Time: 20 minutes (2 minutes per question)\n• Checks logical thinking, analytical ability, and quick problem-solving skills\n• Round 2: Code Reverse - Qualified participants from Round 1 move to finals\n• Given only program output, write correct code (C/C++/Java/Python) to generate exact output\n• Mode: PC (Lab), Time: 40-45 minutes\n• Scoring based on total points + submission time, leaderboard determines winners\n• Round 1 is qualifier (top 20-30% move to finals), Round 2 decides winners\n• In case of tie, submission time is considered',
+    description: '• Test your logical thinking and programming skills in this exciting brain challenge\n• Participants can join individually.\n• Round 1: Puzzle & Aptitude Quest - Solve 10 basic puzzles and aptitude questions\n• Mix of reasoning, number series, and simple logic problems\n• Mode: Google Form / Paper-based, Time: 20 minutes (2 minutes per question)\n• Checks logical thinking, analytical ability, and quick problem-solving skills\n• Round 2: Code Reverse - Qualified participants from Round 1 move to finals\n• Given only program output, write correct code (C/C++/Java/Python) to generate exact output\n• Mode: PC (Lab), Time: 40-45 minutes\n• Scoring based on total points + submission time, leaderboard determines winners\n• Round 1 is qualifier (top 20-30% move to finals), Round 2 decides winners\n• In case of tie, submission time is considered',
     date: '15 Sep 2025',
     time: 'To be announced soon',
     location: 'To be announced soon',
@@ -159,7 +159,7 @@ const EventDetail = () => {
             <div className="meta-item"><strong>Date</strong><span>{event.date}</span></div>
             <div className="meta-item"><strong>Time</strong><span>{event.time}</span></div>
             <div className="meta-item"><strong>Location</strong><span>{event.location}</span></div>
-            <div className="meta-item"><strong>Fee</strong><span>{event.price}</span></div>
+            {/* <div className="meta-item"><strong>Fee</strong><span>{event.price}</span></div> */}
             <div className="meta-item"><strong>Coordinator</strong><span>{event.instructor}</span></div>
 
           </div>
