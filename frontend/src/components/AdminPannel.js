@@ -576,7 +576,7 @@ export default function AdminPannel() {
         view === 'on-spot-registration' && (
           <div>
             <h2 style={{ fontWeight: 'bold', textAlign: 'center', marginTop: '20px' }}>On Spot Registration</h2>
-            <FormRegister />
+            <FormRegister isOnSpot={true} />
           </div>
         )
       }
