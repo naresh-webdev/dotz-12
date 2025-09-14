@@ -9,9 +9,10 @@ import About from './components/About';
 import Sponsors from './components/Sponsors';
 import Contact from './components/Contact';
 import EventDetail from './components/EventDetail';
-import FormRegister from './components/FormRegister';
 import PaymentSuccess from './components/PaymentSuccess';
 import PaymentPage from './components/PaymentPage';
+import RegistrationSuccess from './components/RegistrationSuccess';
+import RegistrationStatus from './components/RegistrationStatus';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RefundPolicy from './components/RefundPolicy';
@@ -123,10 +124,12 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/register" element={<FormRegister isOnSpot={false}/>} />
+            <Route path="/register" element={<RegistrationStatus />} />
             <Route path='/payment' element={<PaymentPage />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-failed" element={<PaymentFailed />} />
+            <Route path="/registration-success" element={<RegistrationSuccess />} />
+            <Route path="/registration-status" element={<RegistrationStatus />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsConditions />} />
