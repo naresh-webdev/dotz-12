@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import './FormRegister.css';
 import { load } from "@cashfreepayments/cashfree-js";
 import { useNavigate } from "react-router-dom";
@@ -45,18 +45,112 @@ export default function FormRegister({ isOnSpot = false }) {
     paperPresentationTitle: "",
     paperPresentationAbstract: ""
   });
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ show: false, message: "", errors: [] });
+  const formRef = useRef(null);
   const navigate = useNavigate();
+
+  // Validation functions
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateRegisterNumber = (regNumber) => {
+    return regNumber.trim().length > 0;
+  };
+
+  const validateCollegeId = (collegeId) => {
+    return collegeId.trim().length > 0;
+  };
+
+  const validateCollegeName = (collegeName) => {
+    return collegeName.trim().length > 0;
+  };
+
+  const validateLeaderName = (leaderName) => {
+    return leaderName.trim().length > 0;
+  };
+
+  // Function to scroll to the first error
+  const scrollToFirstError = (newErrors, memberErrors) => {
+    // Scroll to top if there are leader errors
+    if (Object.keys(newErrors).length > 0) {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+    
+    // Scroll to first member error if no leader errors
+    if (memberErrors.some(err => err !== undefined)) {
+      const firstErrorIndex = memberErrors.findIndex(err => err !== undefined);
+      if (firstErrorIndex !== -1) {
+        const element = document.getElementById(`member-${firstErrorIndex}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          if (formRef.current) {
+            formRef.current.scrollIntoView({ behavior: "smooth" });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }
+      }
+    }
+  };
 
   // Handler for simple fields
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // For phone numbers, only allow digits and limit to 10 characters
+    if (name === "leaderPhoneNumber") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 10);
+      setForm((prev) => ({ ...prev, [name]: numericValue }));
+      return;
+    }
+    
+    // For register numbers and college ID, allow any input
+    if (name === "leaderRegisterNumber" || name === "collegeId") {
+      setForm((prev) => ({ ...prev, [name]: value }));
+      return;
+    }
+    
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handler for Members
   const handleMemberChange = (idx, e) => {
     const { name, value } = e.target;
+    
+    // For member phone numbers, only allow digits and limit to 10 characters
+    if (name === "phone") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 10);
+      const updated = form.members.map((m, i) =>
+        i === idx ? { ...m, [name]: numericValue } : m
+      );
+      setForm((prev) => ({ ...prev, members: updated }));
+      return;
+    }
+    
+    // For member register numbers, trim whitespace
+    if (name === "registerNumber") {
+      const updated = form.members.map((m, i) =>
+        i === idx ? { ...m, [name]: value } : m
+      );
+      setForm((prev) => ({ ...prev, members: updated }));
+      return;
+    }
+    
     const updated = form.members.map((m, i) =>
       i === idx ? { ...m, [name]: value } : m
     );
@@ -129,38 +223,138 @@ export default function FormRegister({ isOnSpot = false }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
+    
+    // Clear previous errors
+    setErrors({});
     setLoading(true);
-    // compute the participantCount
-    const participantCount = form.members.length + 1; // +1 for the leader
+    
+    // Validate leader information
+    const newErrors = {};
+    
+    if (!validateLeaderName(form.leaderName)) {
+      newErrors.leaderName = "Please enter the leader's name.";
+    }
+    
+    if (!validatePhoneNumber(form.leaderPhoneNumber)) {
+      newErrors.leaderPhoneNumber = "Please enter a valid 10-digit phone number without spaces or country code.";
+    }
+    
+    if (!validateEmail(form.leaderEmail)) {
+      newErrors.leaderEmail = "Please enter a valid email address.";
+    }
+    
+    if (!validateRegisterNumber(form.leaderRegisterNumber)) {
+      newErrors.leaderRegisterNumber = "Please enter the leader's register number.";
+    }
+    
+    if (!validateCollegeName(form.collegeName)) {
+      newErrors.collegeName = "Please enter the college name.";
+    }
+    
+    if (!validateCollegeId(form.collegeId)) {
+      newErrors.collegeId = "Please enter the college code.";
+    }
+    
     // Validate leader events
     if (form.leaderEvents.length < 2) {
-      alert("❌ Please select at least 2 events for the leader.");
-      setLoading(false);
-      return;
+      newErrors.leaderEvents = "Please select at least 2 events for the leader.";
+    } else if (form.leaderEvents.length > 5) {
+      newErrors.leaderEvents = "Leader can select at most 5 events.";
     }
-    // Validate member events
-    for (const mem of form.members) {
-      if (mem.events.length < 1) {
-        alert(`❌ Please select at least 1 event for member ${mem.name || ''}.`);
-        setLoading(false);
-        return;
+    
+    // Validate member information
+    const memberErrors = [];
+    for (let i = 0; i < form.members.length; i++) {
+      const member = form.members[i];
+      const memberError = {};
+      
+      if (!member.name.trim()) {
+        memberError.name = `Please enter name for member ${i + 1}.`;
+      }
+      
+      if (!validatePhoneNumber(member.phone)) {
+        memberError.phone = `Please enter a valid 10-digit phone number for member ${i + 1} without spaces or country code.`;
+      }
+      
+      if (!validateEmail(member.email)) {
+        memberError.email = `Please enter a valid email address for member ${i + 1}.`;
+      }
+      
+      if (!validateRegisterNumber(member.registerNumber)) {
+        memberError.registerNumber = `Please enter register number for member ${i + 1}.`;
+      }
+      
+      if (member.events.length < 1) {
+        memberError.events = `Please select at least 1 event for member ${i + 1}.`;
+      } else if (member.events.length > 4) {
+        memberError.events = `Member ${i + 1} can select at most 4 events.`;
+      }
+      
+      if (Object.keys(memberError).length > 0) {
+        memberErrors[i] = memberError;
       }
     }
-    // Prepare form data with correct participantCount
-    const formData = { ...form, participantCount };
+    
     // If Paper Presentation is selected, validate title and abstract
     if (form.leaderEvents.includes("Paper Presentation")) {
-      if (!form.paperPresentationTitle.trim() || !form.paperPresentationAbstract.trim()) {
-        alert("❌ Please provide both Paper Presentation Title and Abstract Description.");
-        setLoading(false);
-        return;
+      if (!form.paperPresentationTitle.trim()) {
+        newErrors.paperPresentationTitle = "Please provide a Paper Presentation Title.";
+      }
+      if (!form.paperPresentationAbstract.trim()) {
+        newErrors.paperPresentationAbstract = "Please provide an Abstract Description for the Paper Presentation.";
       }
       if (form.paperPresentationAbstract.length > 1000) {
-        alert("❌ Abstract Description must be 1000 characters or less.");
-        setLoading(false);
-        return;
+        newErrors.paperPresentationAbstract = "Abstract Description must be 1000 characters or less.";
       }
     }
+    
+    // If there are errors, set them and stop submission
+    if (Object.keys(newErrors).length > 0 || memberErrors.some(err => err !== undefined)) {
+      setErrors({ ...newErrors, members: memberErrors });
+      setLoading(false);
+      
+      // Create a list of all errors
+      const errorList = [];
+      
+      // Add leader errors
+      Object.keys(newErrors).forEach(key => {
+        if (key !== "members" && key !== "leaderEvents") {
+          errorList.push(newErrors[key]);
+        }
+      });
+      
+      // Add leader events error
+      if (newErrors.leaderEvents) {
+        errorList.push(newErrors.leaderEvents);
+      }
+      
+      // Add member errors
+      memberErrors.forEach((memberError, index) => {
+        if (memberError) {
+          Object.keys(memberError).forEach(key => {
+            errorList.push(`Member ${index + 1}: ${memberError[key]}`);
+          });
+        }
+      });
+      
+      // Show custom alert modal
+      setAlert({
+        show: true,
+        message: "Please fix the following errors:",
+        errors: errorList
+      });
+      
+      // Scroll to the first error
+      scrollToFirstError(newErrors, memberErrors);
+      
+      return;
+    }
+    
+    // compute the participantCount
+    const participantCount = form.members.length + 1; // +1 for the leader
+    
+    // Prepare form data with correct participantCount
+    const formData = { ...form, participantCount };
     
       if (!isOnSpot) {
         try {
@@ -227,6 +421,45 @@ export default function FormRegister({ isOnSpot = false }) {
 
   return (
     <div className="registration-page registration-form">
+      {/* Custom Alert Modal */}
+      {alert.show && (
+        <div className="alert-modal-overlay">
+          <div className="alert-modal">
+            <div className="alert-modal-header">
+              <h2 className="alert-modal-title">Validation Errors</h2>
+              <button 
+                className="alert-modal-close"
+                onClick={() => setAlert({ show: false, message: "", errors: [] })}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <div className="alert-modal-content">
+              <p className="alert-modal-message">{alert.message}</p>
+              <ul className="alert-error-list">
+                {alert.errors.map((error, index) => (
+                  <li key={index} className="alert-error-item">
+                    <svg className="alert-error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="alert-error-text">{error}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="alert-modal-actions">
+              <button 
+                className="alert-modal-button alert-modal-button-primary"
+                onClick={() => setAlert({ show: false, message: "", errors: [] })}
+              >
+                OK, I'll fix them
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Back Button and Header */}
       <div className="page-header">
         <button 
@@ -246,7 +479,7 @@ export default function FormRegister({ isOnSpot = false }) {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="form-container">
+      <form ref={formRef} onSubmit={handleSubmit} className="form-container">
         {/* Leader Information Section */}
         <div className="form-section">
           <h3 className="section-title">
@@ -264,8 +497,9 @@ export default function FormRegister({ isOnSpot = false }) {
                 onChange={handleChange} 
                 placeholder="Enter leader name" 
                 required 
-                className="form-input" 
+                className={`form-input ${errors.leaderName ? "invalid" : ""}`} 
               />
+              {errors.leaderName && <span className="form-error">{errors.leaderName}</span>}
             </label>
             <label className="form-label">
               <span className="label-text">Phone Number *</span>
@@ -273,11 +507,14 @@ export default function FormRegister({ isOnSpot = false }) {
                 name="leaderPhoneNumber" 
                 value={form.leaderPhoneNumber} 
                 onChange={handleChange} 
-                placeholder="Enter phone number" 
+                placeholder="10-digit number only (e.g. 9876543210)" 
                 required 
                 type="tel" 
-                className="form-input" 
+                className={`form-input ${errors.leaderPhoneNumber ? "invalid" : ""}`} 
+                maxLength="10"
               />
+              <small className="form-hint">10 digits only, no spaces or country code</small>
+              {errors.leaderPhoneNumber && <span className="form-error">{errors.leaderPhoneNumber}</span>}
             </label>
             <label className="form-label">
               <span className="label-text">Email Address *</span>
@@ -288,8 +525,9 @@ export default function FormRegister({ isOnSpot = false }) {
                 placeholder="Enter email address" 
                 required 
                 type="email" 
-                className="form-input" 
+                className={`form-input ${errors.leaderEmail ? "invalid" : ""}`} 
               />
+              {errors.leaderEmail && <span className="form-error">{errors.leaderEmail}</span>}
             </label>
             <label className="form-label">
               <span className="label-text">Register Number *</span>
@@ -300,8 +538,9 @@ export default function FormRegister({ isOnSpot = false }) {
                 placeholder="Enter register number" 
                 required 
                 type="text" 
-                className="form-input" 
+                className={`form-input ${errors.leaderRegisterNumber ? "invalid" : ""}`} 
               />
+              {errors.leaderRegisterNumber && <span className="form-error">{errors.leaderRegisterNumber}</span>}
             </label>
             <label className="form-label">
               <span className="label-text">Food Preference *</span>
@@ -352,8 +591,9 @@ export default function FormRegister({ isOnSpot = false }) {
                 onChange={handleChange} 
                 placeholder="Enter college full name" 
                 required 
-                className="form-input" 
+                className={`form-input ${errors.collegeName ? "invalid" : ""}`} 
               />
+              {errors.collegeName && <span className="form-error">{errors.collegeName}</span>}
             </label>
             <label className="form-label">
               <span className="label-text">College Code *</span>
@@ -363,8 +603,9 @@ export default function FormRegister({ isOnSpot = false }) {
                 onChange={handleChange} 
                 placeholder="Enter college code - eg '4224'" 
                 required 
-                className="form-input" 
+                className={`form-input ${errors.collegeId ? "invalid" : ""}`} 
               />
+              {errors.collegeId && <span className="form-error">{errors.collegeId}</span>}
             </label>
           </div>
         </div>
@@ -396,6 +637,7 @@ export default function FormRegister({ isOnSpot = false }) {
           <div className="selection-counter">
             Selected: {form.leaderEvents.length}/{EVENT_OPTIONS.length} events
           </div>
+          {errors.leaderEvents && <span className="form-error">{errors.leaderEvents}</span>}
           <br></br>
           {/* Paper Presentation Fields */}
           {form.leaderEvents.includes("Paper Presentation") && (
@@ -408,8 +650,9 @@ export default function FormRegister({ isOnSpot = false }) {
                   onChange={handleChange}
                   placeholder="Enter paper title"
                   required
-                  className="form-input "
+                  className={`form-input ${errors.paperPresentationTitle ? "invalid" : ""}`}
                 />
+                {errors.paperPresentationTitle && <span className="form-error">{errors.paperPresentationTitle}</span>}
               </label>
               <label className="form-label">
                 <span className="label-text">Paper Presentation Abstract Description *</span>
@@ -419,11 +662,12 @@ export default function FormRegister({ isOnSpot = false }) {
                   onChange={handleChange}
                   placeholder="Enter abstract description - Max 1000 characters"
                   required
-                  className="form-input"
+                  className={`form-input ${errors.paperPresentationAbstract ? "invalid" : ""}`}
                   rows={4}
                   maxLength={1000}
                 />
                 <span className="char-count">{form.paperPresentationAbstract.length}/1000 characters</span>
+                {errors.paperPresentationAbstract && <span className="form-error">{errors.paperPresentationAbstract}</span>}
               </label>
             </div>
           )}
@@ -439,7 +683,7 @@ export default function FormRegister({ isOnSpot = false }) {
           </h3>
           <div className="members-container">
             {form.members.map((member, idx) => (
-              <div key={idx} className="member-card">
+              <div key={idx} id={`member-${idx}`} className="member-card">
                 <div className="member-header">
                   <h4 className="member-title">Member {idx + 1}</h4>
                   <button 
@@ -462,8 +706,9 @@ export default function FormRegister({ isOnSpot = false }) {
                       onChange={(e) => handleMemberChange(idx, e)} 
                       placeholder="Enter member name" 
                       required 
-                      className="form-input" 
+                      className={`form-input ${errors.members && errors.members[idx] && errors.members[idx].name ? "invalid" : ""}`} 
                     />
+                    {errors.members && errors.members[idx] && errors.members[idx].name && <span className="form-error">{errors.members[idx].name}</span>}
                   </label>
                   <label className="form-label">
                     <span className="label-text">Email *</span>
@@ -474,8 +719,9 @@ export default function FormRegister({ isOnSpot = false }) {
                       placeholder="Enter email address" 
                       required 
                       type="email" 
-                      className="form-input" 
+                      className={`form-input ${errors.members && errors.members[idx] && errors.members[idx].email ? "invalid" : ""}`} 
                     />
+                    {errors.members && errors.members[idx] && errors.members[idx].email && <span className="form-error">{errors.members[idx].email}</span>}
                   </label>
                   <label className="form-label">
                     <span className="label-text">Phone *</span>
@@ -483,11 +729,14 @@ export default function FormRegister({ isOnSpot = false }) {
                       name="phone" 
                       value={member.phone} 
                       onChange={(e) => handleMemberChange(idx, e)} 
-                      placeholder="Enter phone number" 
+                      placeholder="10-digit number only (e.g. 9876543210)" 
                       required 
                       type="tel" 
-                      className="form-input" 
+                      className={`form-input ${errors.members && errors.members[idx] && errors.members[idx].phone ? "invalid" : ""}`} 
+                      maxLength="10"
                     />
+                    <small className="form-hint">10 digits only, no spaces or country code</small>
+                    {errors.members && errors.members[idx] && errors.members[idx].phone && <span className="form-error">{errors.members[idx].phone}</span>}
                   </label>
                   <label className="form-label">
                     <span className="label-text">Register Number *</span>
@@ -498,8 +747,9 @@ export default function FormRegister({ isOnSpot = false }) {
                       placeholder="Enter register number" 
                       required 
                       type="text" 
-                      className="form-input" 
+                      className={`form-input ${errors.members && errors.members[idx] && errors.members[idx].registerNumber ? "invalid" : ""}`} 
                     />
+                    {errors.members && errors.members[idx] && errors.members[idx].registerNumber && <span className="form-error">{errors.members[idx].registerNumber}</span>}
                   </label>
                   <label className="form-label">
                     <span className="label-text">Food Preference *</span>
@@ -551,6 +801,7 @@ export default function FormRegister({ isOnSpot = false }) {
                   <div className="selection-counter">
                     Selected: {member.events.length}/{MEMBER_EVENT_OPTIONS.length} events
                   </div>
+                  {errors.members && errors.members[idx] && errors.members[idx].events && <span className="form-error">{errors.members[idx].events}</span>}
                 </div>
               </div>
             ))}
