@@ -123,7 +123,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/register" element={<FormRegister />} />
+            <Route path="/register" element={<FormRegister isOnSpot={false}/>} />
             <Route path='/payment' element={<PaymentPage />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-failed" element={<PaymentFailed />} />

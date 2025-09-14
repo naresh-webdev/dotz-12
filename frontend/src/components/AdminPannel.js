@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminPannel.css';
 import QrScannerComponent from './QrScanner';
 import * as XLSX from 'xlsx';
+import FormRegister from './FormRegister.jsx';
 
 export default function AdminPannel() {
   const [form, setForm] = useState({ username: '', password: '' });
@@ -355,12 +356,20 @@ export default function AdminPannel() {
           QR Scanner
         </button>
         <button
+          onClick={() => setView('on-spot-registration')}
+          className={`admin-btn-toggle${view === 'on-spot-registration' ? ' active' : ''}`}
+          aria-label="Open Registration form"
+        >
+          On Spot Registration
+        </button>
+        <button
           onClick={handleRefresh}
           className="admin-btn-toggle"
           aria-label="Refresh data"
         >
           Refresh Data
         </button>
+        
         {view === 'team' && (
           <button
             onClick={exportTeamDataToExcel}
@@ -380,7 +389,7 @@ export default function AdminPannel() {
           </button>
         )}
       </div>
-      {view == 'team' && (
+      {view === 'team' && (
         <div>
           <div className="admin-filters">
             <div>
@@ -560,6 +569,14 @@ export default function AdminPannel() {
         view === 'qr-reader' && (
           <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
             <QrScannerComponent />
+          </div>
+        )
+      }
+      {
+        view === 'on-spot-registration' && (
+          <div>
+            <h2 style={{ fontWeight: 'bold', textAlign: 'center', marginTop: '20px' }}>On Spot Registration</h2>
+            <FormRegister />
           </div>
         )
       }

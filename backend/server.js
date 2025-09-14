@@ -542,6 +542,54 @@ app.post("/api/admin-login", async (req, res) => {
 });
 
 
+//-- onspot registration --
+app.post("/api/onspot-register", async (req, res) => {
+  console.log("inside api/onspot-register")
+  try {
+    const teamData = req.body;
+    const teamKey = uuidv4();
+
+    if (teamData.leaderEvents.includes("Paper Presentation")) {
+      const countPaperPresentation = await TeamData.countDocuments({
+        leaderEvents: "Paper Presentation",
+      });
+      teamData.paperPresentationTeamCount = countPaperPresentation + 1;
+    } else {
+      teamData.paperPresentationTeamCount = 0;
+    }
+
+    const count = await TeamData.countDocuments({});
+    teamData.teamNumber = count + 1;
+    teamData.teamKey = teamKey;
+    teamData.paymentStatus = "paid"; // Mark as paid for on-spot registrations
+    teamData.paymentTime = new Date(); // Set payment time to now
+
+    console.log("📩 Received team data:", teamData)
+    const newTeam = new TeamData(teamData)
+    await newTeam.save()
+    await sendConfirmationMail(
+      teamData.leaderName,
+      teamData.leaderEmail,
+      teamData.teamKey
+    );
+    console.log(`Confirmation email sent to ${teamData.leaderEmail}`);
+    return res.status(200).json({
+      success: true,
+      message: 'On-spot registration successful',
+      teamKey: teamKey
+    });
+  } catch (error) {
+    console.error('On-spot registration error:', error);
+    res.status(500).json({
+      message: 'Failed to complete on-spot registration',
+      error: error.message,
+      details: error.response?.data || 'No additional details available'
+    });
+  }
+});
+
+
+
 // ---------- Get All Teams (Admin) ----------
 // GET /api/admin/teams - Fetch all team records for admin panel
 app.get('/api/admin/teams', async (req, res) => {
@@ -554,26 +602,26 @@ app.get('/api/admin/teams', async (req, res) => {
   }
 });
 
-app.get("/api/admin/modify-visited", async (req, res) => {
-  try {
-    const data = req.body;
-    const {teamKey} = data;
-    console.log("inside api/admin/modify-visited", teamKey);
-    if (!teamKey) {
-      return res.status(400).json({ message: 'Team Key is required' });
-    }
-    const team = await TeamData.findOne({teamKey});
-    if (!team) {
-      return res.status(404).json({ message: 'Team not found' });
-    }
-    team.hasVisited = !team.hasVisited;
-    await team.save();
-    res.json({ success: true, message: 'Visited status updated successfully', hasVisited: team.hasVisited });
-  } catch (error) {
-    console.error('Error fetching visited count:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch visited count', error: error.message });
-  }
-});
+// app.get("/api/admin/modify-visited", async (req, res) => {
+//   try {
+//     const data = req.body;
+//     const {teamKey} = data;
+//     console.log("inside api/admin/modify-visited", teamKey);
+//     if (!teamKey) {
+//       return res.status(400).json({ message: 'Team Key is required' });
+//     }
+//     const team = await TeamData.findOne({teamKey});
+//     if (!team) {
+//       return res.status(404).json({ message: 'Team not found' });
+//     }
+//     team.hasVisited = !team.hasVisited;
+//     await team.save();
+//     res.json({ success: true, message: 'Visited status updated successfully', hasVisited: team.hasVisited });
+//   } catch (error) {
+//     console.error('Error fetching visited count:', error);
+//     res.status(500).json({ success: false, message: 'Failed to fetch visited count', error: error.message });
+//   }
+// });
 
 // ---------- Start Server ----------
 app.listen(PORT, () => {

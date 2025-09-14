@@ -29,7 +29,7 @@ const MEMBER_EVENT_OPTIONS = [
   "Non Technical",
 ];
 
-export default function FormRegister({ onSubmit }) {
+export default function FormRegister({ isOnSpot = false }) {
   const [form, setForm] = useState({
     participantCount: "",
     leaderName: "",
@@ -161,8 +161,11 @@ export default function FormRegister({ onSubmit }) {
         return;
       }
     }
-    try {
-      const response = await fetch("https://dotz-12-production.up.railway.app/api/register", {
+    
+      if (!isOnSpot) {
+        try {
+        // Online Registration - initiate payment
+        const response = await fetch("https://dotz-12-production.up.railway.app/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -182,7 +185,43 @@ export default function FormRegister({ onSubmit }) {
     } catch (err) {
       alert("❌ Team registration failed after payment!");
       console.error("❌ Team registration failed:", err);
+    }} else {
+      // On-Spot Registration - no payment
+      try {
+        const response = await fetch("https://dotz-12-production.up.railway.app/api/onspot-register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        const result = await response.json();
+        if (response.ok) {
+          alert("✅ Team registered successfully for On-Spot Registration!");
+          setForm({
+            participantCount: "",
+            leaderName: "",
+            leaderPhoneNumber: "",
+            leaderEmail: "",
+            leaderRegisterNumber: "",
+            leaderFoodPreference: "Vegetarian",
+            leaderGender: "Male",
+            collegeName: "",
+            collegeId: "",
+            members: [ { ...initialMember } ],
+            leaderEvents: [],
+            paperPresentationTitle: "",
+            paperPresentationAbstract: ""
+          });
+        } else {
+          alert("❌ Failed to register team for On-Spot Registration.");
+          console.error("❌ On-Spot registration failed:", result);
+        }
+      } catch (err) {
+        alert("❌ Team registration failed for On-Spot Registration!");
+        console.error("❌ On-Spot registration failed:", err)
+      }
     }
+    
+      
     setLoading(false);
   };
 
@@ -551,7 +590,7 @@ export default function FormRegister({ onSubmit }) {
       </form>
     </div>
   );
-}
+};
 
 
- 
+
