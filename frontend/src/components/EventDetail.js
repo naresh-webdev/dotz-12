@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, Routes, Route } from 'react-router-dom';
 import './EventDetail.css';
 
 // Import images from src/images/event_posters/
@@ -140,8 +140,6 @@ const EventDetail = () => {
   const { id } = useParams();
   const event = allEvents[id];
 
-
-
   if (!event) {
     return (
       <div className="page">
@@ -150,6 +148,12 @@ const EventDetail = () => {
       </div>
     );
   }
+
+  // Function to handle quiz button click
+  const handleStartQuiz = () => {
+    // Open the Microsoft Form in a new tab
+    window.open('https://forms.office.com/r/xn79iTqa7Z', '_blank');
+  };
 
   return (
     <div className="event-detail-page">
@@ -191,6 +195,14 @@ const EventDetail = () => {
 
           <div className="event-actions">
             <Link to="/registration-status" className="btn btn-primary">Register Now</Link>
+            {event.id === 'tech1' && (
+              <button
+                onClick={handleStartQuiz}
+                className="btn btn-outline"
+              >
+                Start Quiz
+              </button>
+            )}
           </div>
         </div>
       </div>
