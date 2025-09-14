@@ -562,6 +562,7 @@ app.post("/api/onspot-register", async (req, res) => {
     teamData.teamNumber = count + 1;
     teamData.teamKey = teamKey;
     teamData.paymentStatus = "paid"; // Mark as paid for on-spot registrations
+    teamData.bankReference = "ONSPOT_PAYMENT";
     teamData.paymentTime = new Date(); // Set payment time to now
 
     console.log("📩 Received team data:", teamData)
