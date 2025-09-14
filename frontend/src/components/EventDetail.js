@@ -57,7 +57,17 @@ const allEvents = {
     title: 'Vision X',
     image: visionXImg,
     category: 'Technical',
-    description: `• Paper Presentation event offering a platform for students to showcase innovative research and technical skills\n• Time Limit: 5 minutes per team + 2 minutes Q&A session\n• Presentation Format: 12 slides (must include Introduction & Conclusion)\n• Venues: Seminar Hall, Mini-Seminar Hall, IT Lab\n• Setup: Projectors (Seminar Halls), Raptor & HDMI (IT Lab), Mic & Sound System\n• Papers will be shortlisted - only selected teams can present.\n• No need to submit final presentation before event\n• Presentations in <bold> PPT/PDF format with pen drive required</bold>\n• Reporting time: 30 minutes before event starts\n• Judging: Content quality, originality, presentation skills, time management, Q&A\n• Event updates and slot details shared via email - stay active on mail`,
+    description: `• Paper Presentation event offering a platform for students to showcase innovative research and technical skills
+• Time Limit: 5 minutes per team + 2 minutes Q&A session
+• Presentation Format: 12 slides (must include Introduction & Conclusion)
+• Venues: Seminar Hall, Mini-Seminar Hall, IT Lab
+• Setup: Projectors (Seminar Halls), Raptor & HDMI (IT Lab), Mic & Sound System
+• Papers will be shortlisted - only selected teams can present.
+• No need to submit final presentation before event
+• Presentations in <bold> PPT/PDF format with pen drive required</bold>
+• Reporting time: 30 minutes before event starts
+• Judging: Content quality, originality, presentation skills, time management, Q&A
+• Event updates and slot details shared via email - stay active on mail`,
     date: '15 Sep 2025',
     time: 'To be announced soon',
     location: 'To be announced soon',
@@ -180,7 +190,7 @@ const EventDetail = () => {
           </div>
 
           <div className="event-actions">
-            <Link to="/register" className="btn btn-primary">Register Now</Link>
+            <Link to="/registration-status" className="btn btn-primary">Register Now</Link>
           </div>
         </div>
       </div>

@@ -475,7 +475,7 @@ const Home = () => {
               </div>
             </div>
             <Link
-              to="/register"
+              to="/registration-status"
               className="btn-register"
               aria-label="Go to registration form"
             >
